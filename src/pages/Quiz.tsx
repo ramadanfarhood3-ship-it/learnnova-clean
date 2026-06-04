@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { mockQuizQuestions } from '../data/mockData';
 
 interface QuizProps {
@@ -6,7 +6,6 @@ interface QuizProps {
 }
 
 export default function Quiz({ onEarnXP }: QuizProps) {
-
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [isAnswered, setIsAnswered] = useState(false);
@@ -16,7 +15,7 @@ export default function Quiz({ onEarnXP }: QuizProps) {
   const currentQuestion = mockQuizQuestions[currentQuestionIndex];
 
   const handleOptionClick = (optionIndex: number) => {
-    if (isAnswered) return; // منع تغيير الإجابة بعد الاختيار
+    if (isAnswered) return;
     setSelectedOption(optionIndex);
   };
 
@@ -48,11 +47,9 @@ export default function Quiz({ onEarnXP }: QuizProps) {
     setQuizComplete(false);
   };
 
-  // 1. شاشة نهاية الكويز وعرض النتيجة
-    // عند الضغط على إنهاء وإضافة النقاط
   const handleFinishAndClaim = () => {
     const earnedXP = score * 50;
-    onEarnXP(earnedXP); // إرسال النقاط ديناميكياً للـ App State
+    onEarnXP(earnedXP); 
     handleRestart();
   };
 
@@ -73,50 +70,31 @@ export default function Quiz({ onEarnXP }: QuizProps) {
     );
   }
 
-      <div style={{ padding: '24px', background: '#171821', borderRadius: '12px', color: '#fff', textAlign: 'center' }}>
-        <h2 style={{ color: '#8c52ff', marginBottom: '16px' }}>🎉 Quiz Completed!</h2>
-        <p style={{ fontSize: '18px', marginBottom: '8px' }}>You answered <strong>{score}</strong> out of <strong>{mockQuizQuestions.length}</strong> correctly.</p>
-        <p style={{ color: '#4caf50', fontSize: '20px', fontWeight: 'bold', marginBottom: '24px' }}>+{earnedXP} XP Earned!</p>
-        <button 
-          onClick={handleRestart}
-          style={{ background: '#8c52ff', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}
-        >
-          Try Again
-        </button>
-      </div>
-    );
-  }
-
-  // 2. شاشة عرض السؤال الحالي
   return (
     <div style={{ padding: '24px', background: '#171821', borderRadius: '12px', color: '#fff' }}>
-      {/* العداد العلوي */}
       <div style={{ display: 'flex', justifyContent: 'space-between', color: '#b5b5be', marginBottom: '16px', fontSize: '14px' }}>
         <span>Question {currentQuestionIndex + 1} of {mockQuizQuestions.length}</span>
         <span>Score: {score}</span>
       </div>
 
-      {/* نص السؤال */}
       <h3 style={{ fontSize: '18px', marginBottom: '20px', lineHeight: '1.5' }}>{currentQuestion.question}</h3>
 
-      {/* خيارات الإجابة */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px' }}>
         {currentQuestion.options.map((option, index) => {
-          // تحديد لون الخلفية بناءً على حالة الإجابة
           let backgroundColor = '#21222d';
           let border = '1px solid #2f303e';
 
           if (selectedOption === index) {
-            backgroundColor = '#3d2b5c'; // لون التحديد قبل التأكيد
+            backgroundColor = '#3d2b5c';
             border = '1px solid #8c52ff';
           }
 
           if (isAnswered) {
             if (index === currentQuestion.correctAnswer) {
-              backgroundColor = '#1b3b22'; // اللون الأخضر للإجابة الصحيحة
+              backgroundColor = '#1b3b22';
               border = '1px solid #4caf50';
             } else if (selectedOption === index) {
-              backgroundColor = '#3a1d28'; // اللون الأحمر للإجابة الخاطئة المحددة
+              backgroundColor = '#3a1d28';
               border = '1px solid #f44336';
             }
           }
@@ -144,7 +122,6 @@ export default function Quiz({ onEarnXP }: QuizProps) {
         })}
       </div>
 
-      {/* زر التحكم السفلي (تأكيد أو التالي) */}
       {!isAnswered ? (
         <button
           onClick={handleSubmitAnswer}

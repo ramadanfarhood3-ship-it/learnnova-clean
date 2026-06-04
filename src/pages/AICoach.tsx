@@ -1,118 +1,157 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from "react";
 
 interface Message {
   id: string;
-  sender: 'user' | 'bot';
+  sender: 'user' | 'ai';
   text: string;
-  time: string;
+  timestamp: string;
 }
 
 export default function AICoach() {
   const [messages, setMessages] = useState<Message[]>([
-    { id: '1', sender: 'bot', text: 'Hello Ramadan! 👋 I am your LearnNova AI Coach. What would you like to learn today?', time: 'Just now' }
+    {
+      id: "init",
+      sender: "ai",
+      text: "👋 ¡Hola Ramadan! I am your personal AI Academic Coach. Whether you need help with Spanish vocabulary, complex Physics laws, or Geography map memorization, I've got your back! What are we mastering today?",
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    }
   ]);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // دالة الإرسال المركزية
+  // عمل سكرول تلقائي لأسفل الشات عند وصول رسائل جديدة
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, isTyping]);
+
+  // قائمة الاقتراحات السريعة للأسئلة
+  const suggestions = [
+    "Explain Newton's Third Law with examples.",
+    "Give me 5 essential Spanish verbs for beginners.",
+    "What is the difference between weather and climate?"
+  ];
+
   const handleSendMessage = (textToSend: string) => {
-    const targetText = textToSend.trim();
-    if (!targetText) return;
+    if (!textToSend.trim()) return;
 
-    const userMsg: Message = {
-      id: Date.now().toString(),
-      sender: 'user',
-      text: targetText,
-      time: 'Just now'
+    const userTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const userMessage: Message = {
+      id: Math.random().toString(),
+      sender: "user",
+      text: textToSend,
+      timestamp: userTime
     };
 
-    setMessages(prev => [...prev, userMsg]);
-    
-    // لو أرسل من حقل الإدخال نقوم بتفريغه
-    if (textToSend === input) {
-      setInput('');
-    }
+    setMessages(prev => [...prev, userMessage]);
+    setInput("");
+    setIsTyping(true);
 
-    // محاكاة رد الذكاء الاصطناعي الذكي سريعاً
+    // محاكاة رد الذكاء الاصطناعي التفاعلي بناءً على السؤال المختار أو المكتوب
     setTimeout(() => {
-      const botMsg: Message = {
-        id: (Date.now() + 1).toString(),
-        sender: 'bot',
-        text: `Excellent choice! Regarding your query about "${targetText}", let's break it down deeply. In professional practice, mastering this concept requires solid fundamentals and continuous daily practice. Let me know if you need a practical code example or formula analysis! 🚀`,
-        time: 'Just now'
+      let aiResponse = "That's a great academic question, Ramadan! Let's break it down into easy steps so you can ace your next quiz.";
+      
+      if (textToSend.includes("Newton")) {
+        aiResponse = "⚛️ **Newton's Third Law** states that for every action, there is an equal and opposite reaction! For example, when a rocket launches, fire pushes down (action), and the rocket shoots up into space (reaction).";
+      } else if (textToSend.includes("Spanish") || textToSend.includes("verbs")) {
+        aiResponse = "🇪🇸 Excellent! Here are 5 foundational Spanish verbs:\n1. **Ser / Estar** (To be)\n2. **Hablar** (To speak)\n3. **Tener** (To have)\n4. **Hacer** (To do/make)\n5. **Querer** (To want). Try using them in a sentence!";
+      } else if (textToSend.includes("weather") || textToSend.includes("climate")) {
+        aiResponse = "🌍 **Weather** refers to short-term atmospheric conditions (like it's raining today in Berlin). **Climate** is the long-term average of weather patterns over 30+ years (like Egypt having a hot, dry climate).";
+      }
+
+      const aiTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const aiMessage: Message = {
+        id: Math.random().toString(),
+        sender: "ai",
+        text: aiResponse,
+        timestamp: aiTime
       };
-      setMessages(prev => [...prev, botMsg]);
-    }, 800);
+
+      setMessages(prev => [...prev, aiMessage]);
+      setIsTyping(false);
+    }, 1200);
   };
 
   return (
-    <div className="panel big" style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 160px)', background: '#171821', border: '1px solid #2f303e', borderRadius: '16px', padding: '24px' }}>
+    <div className="panel big" style={{ background: '#171821', color: '#fff', padding: '24px', borderRadius: '16px', border: '1px solid #2f303e', height: 'calc(100vh - 160px)', display: 'flex', flexDirection: 'column' }}>
       
-      {/* الهيدر الخاص بالشات */}
-      <div style={{ borderBottom: '1px solid #2f303e', paddingBottom: '16px', marginBottom: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div>
-          <h2 style={{ fontSize: '20px', color: '#fff' }}>🤖 AI Coach Chat</h2>
-          <p style={{ color: '#7a7a85', fontSize: '13px', marginTop: '4px' }}>Your personal intelligent academic assistant</p>
-        </div>
-        <span style={{ color: '#8c52ff', fontSize: '12px', background: 'rgba(140, 82, 255, 0.1)', padding: '6px 12px', borderRadius: '20px', fontWeight: 'bold' }}>Online</span>
+      {/* هيدر الشات */}
+      <div style={{ borderBottom: '1px solid #2f303e', paddingBottom: '12px', marginBottom: '16px' }}>
+        <h2 style={{ fontSize: '18px', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>🤖 LearnNova AI Coach</h2>
+        <p style={{ color: '#7a7a85', fontSize: '12px', margin: '4px 0 0 0' }}>Instant step-by-step guidance tailored to your active academic course matrix.</p>
       </div>
 
-      {/* منطقة الرسائل التفاعلية */}
-      <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '12px', paddingRight: '4px', marginBottom: '16px' }}>
+      {/* منطقة الرسائل */}
+      <div style={{ flex: 1, overflowY: 'auto', paddingRight: '4px', marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
         {messages.map((msg) => (
-          <div key={msg.id} style={{
-            alignSelf: msg.sender === 'user' ? 'flex-end' : 'flex-start',
-            backgroundColor: msg.sender === 'user' ? '#8c52ff' : '#21222d',
-            border: msg.sender === 'user' ? 'none' : '1px solid #2f303e',
-            color: '#fff',
-            padding: '14px 18px',
-            borderRadius: msg.sender === 'user' ? '16px 16px 0 16px' : '16px 16px 16px 0',
-            maxWidth: '75%',
-            fontSize: '14px',
-            lineHeight: '1.5',
-            boxShadow: msg.sender === 'user' ? '0 4px 12px rgba(140, 82, 255, 0.2)' : 'none'
-          }}>
-            <p style={{ margin: 0 }}>{msg.text}</p>
-            <span style={{ display: 'block', fontSize: '10px', color: msg.sender === 'user' ? '#e1d5ff' : '#7a7a85', marginTop: '6px', textAlign: 'right' }}>{msg.time}</span>
+          <div 
+            key={msg.id} 
+            style={{ 
+              alignSelf: msg.sender === 'user' ? 'flex-end' : 'flex-start',
+              maxWidth: '75%',
+              background: msg.sender === 'user' ? '#8c52ff' : '#21222d',
+              border: msg.sender === 'user' ? 'none' : '1px solid #2f303e',
+              padding: '12px 16px',
+              borderRadius: msg.sender === 'user' ? '14px 14px 0 14px' : '14px 14px 14px 0',
+              color: '#fff',
+              fontSize: '14px',
+              lineHeight: '1.5',
+              whiteSpace: 'pre-line'
+            }}
+          >
+            <div>{msg.text}</div>
+            <div style={{ fontSize: '10px', color: msg.sender === 'user' ? 'rgba(255,255,255,0.7)' : '#7a7a85', textAlign: 'right', marginTop: '6px' }}>
+              {msg.timestamp}
+            </div>
           </div>
         ))}
+
+        {isTyping && (
+          <div style={{ alignSelf: 'flex-start', background: '#21222d', border: '1px solid #2f303e', padding: '12px 16px', borderRadius: '14px 14px 14px 0', color: '#7a7a85', fontSize: '13px', italic: 'true' }}>
+            AI Coach is thinking... 🧠
+          </div>
+        )}
+        <div ref={messagesEndRef} />
       </div>
 
-      {/* الأزرار السريعة المأخوذة من واجهتك الأنيقة لزيادة سرعة التفاعل */}
+      {/* الأسئلة المقترحة السريعة */}
       {messages.length === 1 && (
-        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '16px' }}>
-          <button onClick={() => handleSendMessage("Explain photosynthesis")} style={{ background: '#21222d', border: '1px solid #2f303e', color: '#fff', padding: '8px 14px', borderRadius: '20px', cursor: 'pointer', fontSize: '12px', transition: 'all 0.2s' }}>
-            Explain photosynthesis ↗
-          </button>
-          <button onClick={() => handleSendMessage("Help me with algebra")} style={{ background: '#21222d', border: '1px solid #2f303e', color: '#fff', padding: '8px 14px', borderRadius: '20px', cursor: 'pointer', fontSize: '12px', transition: 'all 0.2s' }}>
-            Help me with algebra ↗
-          </button>
-          <button onClick={() => handleSendMessage("Quiz me on physics")} style={{ background: '#21222d', border: '1px solid #2f303e', color: '#fff', padding: '8px 14px', borderRadius: '20px', cursor: 'pointer', fontSize: '12px', transition: 'all 0.2s' }}>
-            Quiz me on physics ↗
-          </button>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '16px' }}>
+          <span style={{ fontSize: '12px', color: '#7a7a85', fontWeight: 'bold' }}>SUGGESTED TOPICS:</span>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+            {suggestions.map((s, idx) => (
+              <button 
+                key={idx} 
+                onClick={() => handleSendMessage(s)}
+                style={{ background: '#12131a', color: '#b085ff', border: '1px solid #2f303e', padding: '8px 12px', borderRadius: '8px', fontSize: '12px', cursor: 'pointer', transition: 'all 0.2s' }}
+                onMouseEnter={(e) => e.currentTarget.style.borderColor = '#8c52ff'}
+                onMouseLeave={(e) => e.currentTarget.style.borderColor = '#2f303e'}
+              >
+                {s}
+              </button>
+            ))}
+          </div>
         </div>
       )}
 
-      {/* منطقة الإدخال وزر الإرسال */}
-      <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+      {/* صندوق الإدخال والإرسال */}
+      <div style={{ display: 'flex', gap: '10px' }}>
         <input 
           type="text" 
+          placeholder="Ask your academic coach anything..." 
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleSendMessage(input)}
-          placeholder="Ask your question..." 
-          style={{ flex: 1, background: '#21222d', border: '1px solid #2f303e', color: '#fff', padding: '14px', borderRadius: '12px', fontSize: '14px', outline: 'none', transition: 'border-color 0.2s' }}
-          onFocus={(e) => e.target.style.borderColor = '#8c52ff'}
-          onBlur={(e) => e.target.style.borderColor = '#2f303e'}
+          style={{ flex: 1, background: '#12131a', border: '1px solid #2f303e', color: '#fff', padding: '14px', borderRadius: '10px', fontSize: '14px' }}
         />
         <button 
           onClick={() => handleSendMessage(input)}
-          style={{ background: '#8c52ff', color: '#fff', border: 'none', padding: '14px 28px', borderRadius: '12px', cursor: 'pointer', fontWeight: 'bold', fontSize: '14px', boxShadow: '0 4px 12px rgba(140, 82, 255, 0.3)', transition: 'transform 0.1s' }}
-          onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.98)'}
-          onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
+          style={{ background: '#8c52ff', color: '#fff', border: 'none', padding: '0 24px', borderRadius: '10px', fontWeight: 'bold', cursor: 'pointer' }}
         >
           Send
         </button>
       </div>
+
     </div>
   );
 }

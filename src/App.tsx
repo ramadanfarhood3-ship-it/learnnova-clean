@@ -9,7 +9,7 @@ const courses = [
 
 export default function App() {
   const [xp, setXp] = useState(2450);
-  const [level, setLevel] = useState(15);
+  const [level] = useState(15);
   const [darkMode, setDarkMode] = useState(true);
 
   const startQuiz = () => {

@@ -106,8 +106,8 @@ export default function App() {
         return <CoursesPage />;
       case 'quiz':
         return <Quiz onEarnXP={handleEarnXP} />;
-      case 'ai-coach':
-        return <AICoach />;
+            case 'ai-coach':
+        return <AICoach lang={lang} />; // تم تمرير متغيّر اللغة هنا بنجاح
       case 'achievements':
         return <Achievements />;
       case 'analytics':

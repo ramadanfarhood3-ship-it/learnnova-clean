@@ -9,23 +9,26 @@ const courses = [
 ];
 
 export default function App() {
-useEffect(() => {
-  const savedXp = localStorage.getItem("learnnova-xp");
-  const savedDark = localStorage.getItem("learnnova-dark");
-
-  if (savedXp) setXp(Number(savedXp));
-  if (savedDark === "true") setDark(true);
-}, []);
-
-useEffect(() => {
-  localStorage.setItem("learnnova-xp", String(xp));
-}, [xp]);
-
-useEffect(() => {
-  localStorage.setItem("learnnova-dark", String(dark));
-}, [dark]);
+  const [dark, setDark] = useState(false);
+  const [xp, setXp] = useState(2450);
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
+
+  useEffect(() => {
+    const savedXp = localStorage.getItem("learnnova-xp");
+    const savedDark = localStorage.getItem("learnnova-dark");
+
+    if (savedXp) setXp(Number(savedXp));
+    if (savedDark === "true") setDark(true);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("learnnova-xp", String(xp));
+  }, [xp]);
+
+  useEffect(() => {
+    localStorage.setItem("learnnova-dark", String(dark));
+  }, [dark]);
 
   const level = Math.floor(xp / 200);
 
@@ -36,7 +39,9 @@ useEffect(() => {
 
   function askAI() {
     if (!question.trim()) return;
-    setAnswer(`🤖 Tipp: Für "${question}" solltest du zuerst die Grundlagen wiederholen und danach 3 Übungen machen.`);
+    setAnswer(
+      `🤖 Tipp: Für "${question}" solltest du zuerst die Grundlagen wiederholen und danach 3 Übungen machen.`
+    );
     setQuestion("");
   }
 

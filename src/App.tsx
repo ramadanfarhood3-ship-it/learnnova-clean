@@ -11,16 +11,34 @@ const courses = [
 export default function App() {
   const [dark, setDark] = useState(false);
   const [xp, setXp] = useState(2450);
+  const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
+
+  const level = Math.floor(xp / 200);
 
   function startQuiz() {
     setXp(xp + 50);
     alert("✅ Richtig! +50 XP");
   }
 
+  function askAI() {
+    if (!question.trim()) return;
+    setAnswer(`🤖 Tipp: Für "${question}" solltest du zuerst die Grundlagen wiederholen und danach 3 Übungen machen.`);
+    setQuestion("");
+  }
+
   return (
     <div className={dark ? "app dark" : "app"}>
       <aside className="sidebar">
         <h2>🎓 LearnNova</h2>
+
+        <div className="profile">
+          <div className="avatar">R</div>
+          <h3>Ramadan</h3>
+          <p>Level {level}</p>
+          <p>{xp} XP</p>
+        </div>
+
         <button>📊 Dashboard</button>
         <button>📚 Kurse</button>
         <button>🏆 Erfolge</button>
@@ -32,15 +50,24 @@ export default function App() {
 
       <main className="main">
         <header className="hero">
-          <h1>Willkommen zurück, Ramadan! 🚀</h1>
-          <p>Heute hast du schon 240 XP gesammelt. Mach weiter so!</p>
+          <h1>🚀 LearnNova Ultra</h1>
+          <p>Die intelligente Lernplattform für Schule und Zukunft.</p>
         </header>
 
         <section className="stats">
           <div className="card">🏆 <h2>{xp}</h2><p>Gesamt XP</p></div>
-          <div className="card">⭐ <h2>15</h2><p>Level</p></div>
+          <div className="card">⭐ <h2>{level}</h2><p>Level</p></div>
           <div className="card">🔥 <h2>12</h2><p>Tage Streak</p></div>
           <div className="card">✅ <h2>87%</h2><p>Erfolgsquote</p></div>
+        </section>
+
+        <section className="daily">
+          <h2>🎯 Tagesziel</h2>
+          <p>30 Minuten Lernen</p>
+          <div className="progress-bar">
+            <div style={{ width: "70%" }}></div>
+          </div>
+          <p>70% geschafft</p>
         </section>
 
         <section>
@@ -70,7 +97,13 @@ export default function App() {
           <div className="panel">
             <h2>🤖 KI-Coach</h2>
             <p>Frage deinen Lernassistenten nach Hilfe.</p>
-            <input placeholder="z.B. Erkläre mir Brüche..." />
+            <input
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              placeholder="z.B. Erkläre mir Brüche..."
+            />
+            <button className="primary" onClick={askAI}>Fragen</button>
+            {answer && <p className="answer">{answer}</p>}
           </div>
         </section>
 
@@ -85,35 +118,21 @@ export default function App() {
         </section>
 
         <section>
-          <h2>🥇 Leaderboard</h2><section>
-  <h2>📅 Lernplan</h2>
-
-  <div className="plan-grid">
-    <div className="plan-card">
-      <h3>Montag</h3>
-      <p>📐 Mathematik - 30 Min</p>
-    </div>
-
-    <div className="plan-card">
-      <h3>Dienstag</h3>
-      <p>🇬🇧 Englisch - 45 Min</p>
-    </div>
-
-    <div className="plan-card">
-      <h3>Mittwoch</h3>
-      <p>⚛️ Physik - 30 Min</p>
-    </div>
-
-    <div className="plan-card">
-      <h3>Donnerstag</h3>
-      <p>📖 Deutsch - 40 Min</p>
-    </div>
-  </div>
-</section>
+          <h2>🥇 Leaderboard</h2>
           <div className="leaderboard">
             <p>1. Anna — 5200 XP</p>
             <p>2. Max — 4800 XP</p>
             <p>3. Ramadan — {xp} XP</p>
+          </div>
+        </section>
+
+        <section>
+          <h2>📅 Lernplan</h2>
+          <div className="plan-grid">
+            <div className="plan-card">Montag<br />📐 Mathematik</div>
+            <div className="plan-card">Dienstag<br />🇬🇧 Englisch</div>
+            <div className="plan-card">Mittwoch<br />⚛️ Physik</div>
+            <div className="plan-card">Donnerstag<br />📖 Deutsch</div>
           </div>
         </section>
       </main>

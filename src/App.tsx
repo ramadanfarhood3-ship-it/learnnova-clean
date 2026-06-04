@@ -9,14 +9,15 @@ import Achievements from "./pages/Achievements";
 import Profile from "./pages/Profile";
 import Analytics from "./pages/Analytics"; 
 import CoursesPage from "./pages/Courses";
+import Settings from "./pages/Settings";
 
-// المصفوفة المحدثة: تم استبدال Englisch بـ Spanisch وإضافة مادة Geographie
+// مصفوفة المواد المحدثة (إسبانيا والجغرافيا)
 const courses = [
   ["📐", "Mathematik", "Algebra Basics", 82],
   ["⚛️", "Physik", "Newton's Laws", 64],
   ["💻", "Informatik", "React Basics", 45],
-  ["🇪🇸", "Spanisch", "Vocabulary & Basics", 30], // مكان Englisch
-  ["🌍", "Geographie", "World Map & Climates", 15], // المادة المضافة الجديدة
+  ["🇪🇸", "Spanisch", "Vocabulary & Basics", 30], 
+  ["🌍", "Geographie", "World Map & Climates", 15], 
 ];
 
 export default function App() {
@@ -43,6 +44,7 @@ export default function App() {
     });
   };
 
+  // دالة التحكم وعرض الشاشات (تم تنظيف التكرار بالكامل)
   const renderContent = () => {
     switch (activeTab) {
       case 'dashboard':
@@ -112,6 +114,8 @@ export default function App() {
         return <Analytics />; 
       case 'profile':
         return <Profile currentXP={userXP} currentLevel={userLevel} />;
+      case 'settings':
+        return <Settings />; 
       default:
         return (
           <div style={{ padding: '24px', color: '#7a7a85', textAlign: 'center' }}>
@@ -122,7 +126,6 @@ export default function App() {
   };
 
   return (
-    // قلب اتجاه الصفحة تلقائياً إلى RTL إذا تم اختيار اللغة العربية لضبط التصميم هندسياً
     <div className="app" style={{ direction: lang === 'ar' ? 'rtl' : 'ltr' }}>
       
       <aside className="sidebar" style={{ left: lang === 'ar' ? 'auto' : 0, right: lang === 'ar' ? 0 : 'auto', borderRight: lang === 'ar' ? 'none' : '1px solid #2f303e', borderLeft: lang === 'ar' ? '1px solid #2f303e' : 'none' }}>
@@ -134,12 +137,13 @@ export default function App() {
         <button className={activeTab === 'achievements' ? 'active' : ''} onClick={() => setActiveTab('achievements')}>{t.achievements}</button>
         <button className={activeTab === 'analytics' ? 'active' : ''} onClick={() => setActiveTab('analytics')}>{t.analytics}</button>
         <button className={activeTab === 'profile' ? 'active' : ''} onClick={() => setActiveTab('profile')}>{t.profile}</button>
+        {/* إضافة زر الإعدادات أسفل القائمة الجانبية مباشرة ليكون متناسقاً */}
+        <button className={activeTab === 'settings' ? 'active' : ''} onClick={() => setActiveTab('settings')}>⚙️ Settings</button>
 
         <div className="streak">🔥 <b>{mockUserStats.streak}</b><br />{t.streak}</div>
         <div className="pro text-center">⭐ {t.upgrade}<br /><button>{t.upgradeBtn}</button></div>
       </aside>
 
-      {/* تعديل حواف المرجن للمحتوى ليتناسب مع السايدبار الأيمن أو الأيسر */}
       <main className="main" style={{ marginLeft: lang === 'ar' ? 0 : '260px', marginRight: lang === 'ar' ? '260px' : 0 }}>
         <header className="top">
           <div>
@@ -151,7 +155,6 @@ export default function App() {
           
           <input placeholder={t.search} />
 
-          {/* أزرار اختيار اللغات في الهيدر العلوي */}
           <div style={{ display: 'flex', gap: '6px', background: '#171821', padding: '6px', borderRadius: '10px', border: '1px solid #2f303e' }}>
             <button onClick={() => setLang('en')} style={{ background: lang === 'en' ? '#8c52ff' : 'none', color: '#fff', border: 'none', padding: '6px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '12px', fontWeight: 'bold' }}>EN</button>
             <button onClick={() => setLang('ar')} style={{ background: lang === 'ar' ? '#8c52ff' : 'none', color: '#fff', border: 'none', padding: '6px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '12px', fontWeight: 'bold' }}>AR</button>
@@ -173,4 +176,3 @@ export default function App() {
     </div>
   );
 }
-

@@ -68,7 +68,7 @@ export default function App() {
 
       <main className="main">
         <header className="hero">
-          <h1>🚀 LearnNova Ultra</h1>
+          <h1>🔥 TEST CHANGED 🔥</h1>
           <p>Die intelligente Lernplattform für Schule und Zukunft.</p>
         </header>
 

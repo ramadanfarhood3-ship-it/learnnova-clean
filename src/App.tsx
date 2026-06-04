@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 
 const courses = [
@@ -9,8 +9,21 @@ const courses = [
 ];
 
 export default function App() {
-  const [dark, setDark] = useState(false);
-  const [xp, setXp] = useState(2450);
+useEffect(() => {
+  const savedXp = localStorage.getItem("learnnova-xp");
+  const savedDark = localStorage.getItem("learnnova-dark");
+
+  if (savedXp) setXp(Number(savedXp));
+  if (savedDark === "true") setDark(true);
+}, []);
+
+useEffect(() => {
+  localStorage.setItem("learnnova-xp", String(xp));
+}, [xp]);
+
+useEffect(() => {
+  localStorage.setItem("learnnova-dark", String(dark));
+}, [dark]);
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
 

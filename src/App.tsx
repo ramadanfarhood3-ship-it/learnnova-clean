@@ -1,13 +1,14 @@
 import { useState } from "react";
 import "./App.css";
 
-// 1. استيراد المكونات والبيانات المركزية بدقة
-import { mockUserStats, mockContinueLearning } from "./data/mockData";
+// 1. استيراد المكونات والبيانات المركزية بدقة مع إضافة صفحة الكورسات والتحليلات
+import { mockUserStats } from "./data/mockData";
 import Quiz from "./pages/Quiz";
 import AICoach from "./pages/AICoach";
 import Achievements from "./pages/Achievements";
 import Profile from "./pages/Profile";
-import Analytics from "./pages/Analytics"; // إضافة صفحة التحليلات الجديدة
+import Analytics from "./pages/Analytics"; 
+import CoursesPage from "./pages/Courses"; // استدعاء صفحة الكورسات الجديدة هنا
 
 const courses = [
   ["📐", "Mathematik", "Algebra Basics", 82],
@@ -18,7 +19,6 @@ const courses = [
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<'dashboard' | 'courses' | 'quiz' | 'ai-coach' | 'achievements' | 'analytics' | 'profile' | 'settings'>('dashboard');
-  const [isDarkMode, setIsDarkMode] = useState(true);
   
   // إدارة الـ XP والـ Level بشكل ديناميكي ومحترف من الـ State
   const [userXP, setUserXP] = useState(mockUserStats.xp);
@@ -96,6 +96,8 @@ export default function App() {
             </div>
           </section>
         );
+      case 'courses':
+        return <CoursesPage />; // تم توجيه الكورسات لصفحتها المصممة بنجاح
       case 'quiz':
         return <Quiz onEarnXP={handleEarnXP} />;
       case 'ai-coach':
@@ -103,7 +105,7 @@ export default function App() {
       case 'achievements':
         return <Achievements />;
       case 'analytics':
-        return <Analytics />; // عرض شاشة التحليلات
+        return <Analytics />; 
       case 'profile':
         return <Profile currentXP={userXP} currentLevel={userLevel} />;
       default:

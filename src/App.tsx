@@ -41,29 +41,33 @@ export default function App() {
         </div>
       </section>
 
+      <section className="progress-section">
+        <h2>📈 Fortschritt</h2>
+
+        <div className="progress-bar">
+          <div
+            className="progress-fill"
+            style={{ width: "75%" }}
+          ></div>
+        </div>
+
+        <p>75% abgeschlossen</p>
+      </section>
+
+      <section className="achievements">
+        <h2>🏆 Achievements</h2>
+
+        <div className="badge-grid">
+          <div className="badge">🥇 Erste Übung</div>
+          <div className="badge">🔥 7 Tage Streak</div>
+          <div className="badge">⭐ 100 XP</div>
+          <div className="badge">🎓 Mathematik Profi</div>
+        </div>
+      </section>
+
       <button className="quiz-btn">
         🎯 Quiz starten
       </button>
     </div>
   );
 }
-<section className="progress-section">
-  <h2>📈 Fortschritt</h2>
-
-  <div className="progress-bar">
-    <div className="progress-fill"></div>
-  </div>
-
-  <p>75% abgeschlossen</p>
-</section>
-
-<section className="achievements">
-  <h2>🏆 Achievements</h2>
-
-  <div className="badge-grid">
-    <div className="badge">🥇 Erste Übung</div>
-    <div className="badge">🔥 7 Tage Streak</div>
-    <div className="badge">⭐ 100 XP</div>
-    <div className="badge">🎓 Mathematik Profi</div>
-  </div>
-</section>

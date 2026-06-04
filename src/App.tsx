@@ -10,8 +10,8 @@ import Profile from "./pages/Profile";
 import Analytics from "./pages/Analytics"; 
 import CoursesPage from "./pages/Courses";
 import Settings from "./pages/Settings";
+import NovaStore from "./pages/NovaStore"; // استيراد المتجر الجديد
 
-// مصفوفة المواد المحدثة (إسبانيا والجغرافيا)
 const courses = [
   ["📐", "Mathematik", "Algebra Basics", 82],
   ["⚛️", "Physik", "Newton's Laws", 64],
@@ -21,15 +21,13 @@ const courses = [
 ];
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'courses' | 'quiz' | 'ai-coach' | 'achievements' | 'analytics' | 'profile' | 'settings'>('dashboard');
+  // إضافة 'store' إلى التايب الخاص بالتبديل
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'courses' | 'quiz' | 'ai-coach' | 'achievements' | 'analytics' | 'profile' | 'settings' | 'store'>('dashboard');
   
-  // إدارة حالة اللغة الحالية (الإنجليزية هي الافتراضية)
   const [lang, setLang] = useState<'en' | 'ar' | 'de'>('en');
-  
-  // جلب النصوص بناءً على اللغة المختارة
   const t = translations[lang];
 
-  // إدارة الـ XP والـ Level
+  // إدارة الـ XP والـ Level بشكل تفاعلي مركزي
   const [userXP, setUserXP] = useState(mockUserStats.xp);
   const [userLevel, setUserLevel] = useState(mockUserStats.level);
 
@@ -44,7 +42,11 @@ export default function App() {
     });
   };
 
-  // دالة التحكم وعرض الشاشات (تم تنظيف التكرار بالكامل)
+  // دالة خصم النقاط عند الشراء من المتجر
+  const handleSpendXP = (amount: number) => {
+    setUserXP((prevXP) => Math.max(0, prevXP - amount));
+  };
+
   const renderContent = () => {
     switch (activeTab) {
       case 'dashboard':
@@ -106,8 +108,8 @@ export default function App() {
         return <CoursesPage />;
       case 'quiz':
         return <Quiz onEarnXP={handleEarnXP} />;
-            case 'ai-coach':
-        return <AICoach lang={lang} />; // تم تمرير متغيّر اللغة هنا بنجاح
+      case 'ai-coach':
+        return <AICoach lang={lang} />;
       case 'achievements':
         return <Achievements />;
       case 'analytics':
@@ -116,6 +118,8 @@ export default function App() {
         return <Profile currentXP={userXP} currentLevel={userLevel} />;
       case 'settings':
         return <Settings />; 
+      case 'store':
+        return <NovaStore currentXP={userXP} onSpendXP={handleSpendXP} lang={lang} />; // شاشة المتجر
       default:
         return (
           <div style={{ padding: '24px', color: '#7a7a85', textAlign: 'center' }}>
@@ -137,7 +141,10 @@ export default function App() {
         <button className={activeTab === 'achievements' ? 'active' : ''} onClick={() => setActiveTab('achievements')}>{t.achievements}</button>
         <button className={activeTab === 'analytics' ? 'active' : ''} onClick={() => setActiveTab('analytics')}>{t.analytics}</button>
         <button className={activeTab === 'profile' ? 'active' : ''} onClick={() => setActiveTab('profile')}>{t.profile}</button>
-        {/* إضافة زر الإعدادات أسفل القائمة الجانبية مباشرة ليكون متناسقاً */}
+        
+        {/* إضافة زر المتجر الأنيق في السايدبار هنا */}
+        <button className={activeTab === 'store' ? 'active' : ''} onClick={() => setActiveTab('store')}>🛍️ Rewards Store</button>
+        
         <button className={activeTab === 'settings' ? 'active' : ''} onClick={() => setActiveTab('settings')}>⚙️ Settings</button>
 
         <div className="streak">🔥 <b>{mockUserStats.streak}</b><br />{t.streak}</div>

@@ -85,7 +85,31 @@ export default function App() {
         </section>
 
         <section>
-          <h2>🥇 Leaderboard</h2>
+          <h2>🥇 Leaderboard</h2><section>
+  <h2>📅 Lernplan</h2>
+
+  <div className="plan-grid">
+    <div className="plan-card">
+      <h3>Montag</h3>
+      <p>📐 Mathematik - 30 Min</p>
+    </div>
+
+    <div className="plan-card">
+      <h3>Dienstag</h3>
+      <p>🇬🇧 Englisch - 45 Min</p>
+    </div>
+
+    <div className="plan-card">
+      <h3>Mittwoch</h3>
+      <p>⚛️ Physik - 30 Min</p>
+    </div>
+
+    <div className="plan-card">
+      <h3>Donnerstag</h3>
+      <p>📖 Deutsch - 40 Min</p>
+    </div>
+  </div>
+</section>
           <div className="leaderboard">
             <p>1. Anna — 5200 XP</p>
             <p>2. Max — 4800 XP</p>

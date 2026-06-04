@@ -1,12 +1,13 @@
 import { useState } from "react";
 import "./App.css";
 
-// 1. استيراد المكونات والبيانات الاحترافية التي أنشأناها معاً
-import { mockUserStats, mockContinueLearning, mockRecommendedCourses } from "./data/mockData";
+// 1. استيراد المكونات والبيانات المركزية بدقة
+import { mockUserStats, mockContinueLearning } from "./data/mockData";
 import Quiz from "./pages/Quiz";
 import AICoach from "./pages/AICoach";
 import Achievements from "./pages/Achievements";
 import Profile from "./pages/Profile";
+import Analytics from "./pages/Analytics"; // إضافة صفحة التحليلات الجديدة
 
 const courses = [
   ["📐", "Mathematik", "Algebra Basics", 82],
@@ -19,15 +20,15 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<'dashboard' | 'courses' | 'quiz' | 'ai-coach' | 'achievements' | 'analytics' | 'profile' | 'settings'>('dashboard');
   const [isDarkMode, setIsDarkMode] = useState(true);
   
-  // إدارة الـ XP والـ Level بشكل ديناميكي ومحترف
+  // إدارة الـ XP والـ Level بشكل ديناميكي ومحترف من الـ State
   const [userXP, setUserXP] = useState(mockUserStats.xp);
   const [userLevel, setUserLevel] = useState(mockUserStats.level);
 
-  // دالة احترافية لحساب زيادة الـ XP ورفع المستوى تلقائياً
+  // دالة حساب زيادة الـ XP ورفع المستوى تلقائياً
   const handleEarnXP = (amount: number) => {
     setUserXP((prevXP) => {
       const newXP = prevXP + amount;
-      // كل 200 XP يرتفع مستوى المبرمج Ramadan خطوة للأمام!
+      // كل 200 XP يرتفع المستوى خطوة للأمام
       const calculatedLevel = Math.floor(newXP / 200) + 1; 
       if (calculatedLevel > userLevel) {
         setUserLevel(calculatedLevel);
@@ -36,7 +37,7 @@ export default function App() {
     });
   };
 
-  // 2. دالة التحكم في عرض الشاشة المطلوبة بناءً على الزر المضغوط
+  // 2. دالة التحكم وعرض الشاشات تفاعلياً بناءً على التبويب النشط
   const renderContent = () => {
     switch (activeTab) {
       case 'dashboard':
@@ -59,7 +60,7 @@ export default function App() {
               </div>
             </div>
 
-            {/* تم ربط الكوتش السريع بالـ State الحقيقي للمشروع هنا أيضاً */}
+            {/* الكوتش السريع المربوط بزيادة الـ XP الحية */}
             <div className="panel coach">
               <h3>🤖 AI Coach Quick Panel</h3>
               <p>Hello Ramadan! What would you like to learn today?</p>
@@ -69,7 +70,10 @@ export default function App() {
               <button onClick={() => handleEarnXP(50)}>
                 Help me with algebra → (+50 XP)
               </button>
-              <input placeholder="Ask your question..." onKeyDown={(e) => e.key === 'Enter' && setActiveTab('ai-coach')} />
+              <input 
+                placeholder="Ask your question..." 
+                onKeyDown={(e) => e.key === 'Enter' && setActiveTab('ai-coach')} 
+              />
             </div>
 
             <div className="panel big">
@@ -98,6 +102,8 @@ export default function App() {
         return <AICoach />;
       case 'achievements':
         return <Achievements />;
+      case 'analytics':
+        return <Analytics />; // عرض شاشة التحليلات
       case 'profile':
         return <Profile currentXP={userXP} currentLevel={userLevel} />;
       default:
@@ -112,7 +118,7 @@ export default function App() {
 
   return (
     <div className="app">
-      {/* القائمة الجانبية مع ربط الأزرار تفاعلياً بـ setActiveTab */}
+      {/* القائمة الجانبية (Sidebar) مع الربط التفاعلي الكامل لكل الأزرار */}
       <aside className="sidebar">
         <h1>🦄 LearnNova</h1>
         <button className={activeTab === 'dashboard' ? 'active' : ''} onClick={() => setActiveTab('dashboard')}>🏠 Dashboard</button>
@@ -120,6 +126,7 @@ export default function App() {
         <button className={activeTab === 'quiz' ? 'active' : ''} onClick={() => setActiveTab('quiz')}>❔ Quiz System</button>
         <button className={activeTab === 'ai-coach' ? 'active' : ''} onClick={() => setActiveTab('ai-coach')}>🤖 AI Coach</button>
         <button className={activeTab === 'achievements' ? 'active' : ''} onClick={() => setActiveTab('achievements')}>🏆 Achievements</button>
+        <button className={activeTab === 'analytics' ? 'active' : ''} onClick={() => setActiveTab('analytics')}>📊 Analytics</button>
         <button className={activeTab === 'profile' ? 'active' : ''} onClick={() => setActiveTab('profile')}>👤 Profile</button>
 
         <div className="streak">🔥 <b>{mockUserStats.streak}</b><br />Day Streak</div>
@@ -131,7 +138,7 @@ export default function App() {
           <div>
             <h2>Welcome back, Ramadan! 👋</h2>
             <div className="xpbar">
-              {/* حساب النسبة المئوية المتبقية للمستوى بدقة */}
+              {/* حساب مؤشر تقدم المستوى بدقة مئوية */}
               <div style={{ width: `${(userXP % 200) / 2}%` }}></div>
             </div>
           </div>
@@ -139,7 +146,7 @@ export default function App() {
           <div className="avatar" style={{ cursor: 'pointer' }} onClick={() => setActiveTab('profile')}>R</div>
         </header>
 
-        {/* عرض الستاتس الحية المربوطة بالـ State الفعلي للتطبيق */}
+        {/* كروت الإحصائيات العلوية المربوطة بالـ Live State */}
         <section className="stats">
           <div className="stat purple">⭐ <h2>{userXP}</h2><p>Total XP</p></div>
           <div className="stat blue">🎖️ <h2>{userLevel}</h2><p>Level</p></div>
@@ -147,7 +154,7 @@ export default function App() {
           <div className="stat orange">🏆 <h2>{mockUserStats.achievementsCount}</h2><p>Achievements</p></div>
         </section>
 
-        {/* استدعاء منطقة المحتوى التفاعلية هنا */}
+        {/* استدعاء منطقة عرض المحتوى المتغيرة ديناميكياً */}
         {renderContent()}
       </main>
     </div>

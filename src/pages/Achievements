@@ -1,0 +1,65 @@
+import React from 'react';
+import { mockAchievements } from '../data/mockData';
+
+export default function Achievements() {
+  return (
+    <div style={{ padding: '24px', background: '#171821', borderRadius: '12px', color: '#fff', border: '1px solid #2f303e' }}>
+      <div style={{ marginBottom: '24px' }}>
+        <h2 style={{ margin: '0 0 8px 0', fontSize: '22px', fontWeight: 'bold' }}>🏅 Badges & Achievements</h2>
+        <p style={{ margin: 0, color: '#7a7a85', fontSize: '14px' }}>Track your learning milestones and collected points.</p>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '16px' }}>
+        {mockAchievements.map((ach) => (
+          <div key={ach.id} style={{
+            background: '#21222d',
+            border: `1px solid ${ach.unlocked ? '#2f303e' : '#3a1d28'}`,
+            borderRadius: '12px',
+            padding: '16px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+            opacity: ach.unlocked ? 1 : 0.6,
+            position: 'relative'
+          }}>
+            {/* أيقونات شارات التميز الملونة */}
+            <div style={{
+              width: '56px',
+              height: '56px',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: '12px',
+              background: !ach.unlocked ? '#171821' : 
+                          ach.iconType === 'quiz' ? 'rgba(76, 175, 80, 0.15)' : 
+                          ach.iconType === 'xp' ? 'rgba(140, 82, 255, 0.15)' : 'rgba(255, 152, 0, 0.15)',
+              color: !ach.unlocked ? '#7a7a85' :
+                     ach.iconType === 'quiz' ? '#4caf50' : 
+                     ach.iconType === 'xp' ? '#8c52ff' : '#ff9800',
+              fontSize: '24px',
+              border: `2px solid ${!ach.unlocked ? '#2f303e' : 'transparent'}`
+            }}>
+              {!ach.unlocked ? '🔒' : ach.iconType === 'quiz' ? '🏆' : '✨'}
+            </div>
+
+            <h4 style={{ margin: '0 0 4px 0', fontSize: '15px', fontWeight: 'bold' }}>{ach.title}</h4>
+            <p style={{ margin: '0 0 12px 0', color: '#7a7a85', fontSize: '12px', flexGrow: 1 }}>{ach.description}</p>
+            
+            <span style={{
+              fontSize: '11px',
+              fontWeight: 'bold',
+              padding: '4px 8px',
+              borderRadius: '6px',
+              background: ach.unlocked ? 'rgba(140, 82, 255, 0.2)' : '#171821',
+              color: ach.unlocked ? '#8c52ff' : '#7a7a85'
+            }}>
+              {ach.xpValue} XP
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

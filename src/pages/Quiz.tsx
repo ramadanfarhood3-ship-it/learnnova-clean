@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { mockQuizQuestions } from '../data/mockData';
 
-export default function Quiz() {
+interface QuizProps {
+  onEarnXP: (xp: number) => void;
+}
+
+export default function Quiz({ onEarnXP }: QuizProps) {
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [isAnswered, setIsAnswered] = useState(false);
@@ -44,9 +49,30 @@ export default function Quiz() {
   };
 
   // 1. شاشة نهاية الكويز وعرض النتيجة
+    // عند الضغط على إنهاء وإضافة النقاط
+  const handleFinishAndClaim = () => {
+    const earnedXP = score * 50;
+    onEarnXP(earnedXP); // إرسال النقاط ديناميكياً للـ App State
+    handleRestart();
+  };
+
   if (quizComplete) {
-    const earnedXP = score * 50; // 50 XP لكل إجابة صحيحة
+    const earnedXP = score * 50;
     return (
+      <div style={{ padding: '24px', background: '#171821', borderRadius: '12px', color: '#fff', textAlign: 'center' }}>
+        <h2 style={{ color: '#8c52ff', marginBottom: '16px' }}>🎉 Quiz Completed!</h2>
+        <p style={{ fontSize: '18px', marginBottom: '8px' }}>You answered <strong>{score}</strong> out of <strong>{mockQuizQuestions.length}</strong> correctly.</p>
+        <p style={{ color: '#4caf50', fontSize: '20px', fontWeight: 'bold', marginBottom: '24px' }}>+{earnedXP} XP Earned!</p>
+        <button 
+          onClick={handleFinishAndClaim}
+          style={{ background: '#4caf50', color: '#fff', border: 'none', padding: '12px 24px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', fontSize: '15px' }}
+        >
+          Claim XP & Restart
+        </button>
+      </div>
+    );
+  }
+
       <div style={{ padding: '24px', background: '#171821', borderRadius: '12px', color: '#fff', textAlign: 'center' }}>
         <h2 style={{ color: '#8c52ff', marginBottom: '16px' }}>🎉 Quiz Completed!</h2>
         <p style={{ fontSize: '18px', marginBottom: '8px' }}>You answered <strong>{score}</strong> out of <strong>{mockQuizQuestions.length}</strong> correctly.</p>

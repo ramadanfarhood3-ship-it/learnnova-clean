@@ -1,231 +1,196 @@
-/* ==========================================================================
-   1. الإعدادات العامة والمتغيرات الرقمية (Theme Variables)
-   ========================================================================== */
 :root {
-  --bg-main: #0c0d14;
-  --bg-panel: #171821;
-  --bg-card: #21222d;
+  --bg-dark: #12131a;
+  --panel-bg: #171821;
+  --card-bg: #21222d;
   --border-color: #2f303e;
-  --text-main: #ffffff;
+  --primary-color: #8c52ff;
+  --text-white: #ffffff;
   --text-muted: #7a7a85;
-  
-  /* الألوان المميزة للكروت */
-  --purple: #8c52ff;
-  --blue: #2196f3;
-  --green: #4caf50;
-  --orange: #ff9800;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-  background-color: var(--bg-main);
-  color: var(--text-main);
-  overflow-x: hidden;
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-white);
+  -webkit-font-smoothing: antialiased;
 }
 
-/* ==========================================================================
-   2. تقسيم الهيكل الرئيسي (Application Layout)
-   ========================================================================== */
 .app {
   display: flex;
   min-height: 100vh;
-  background-color: var(--bg-main);
 }
 
-/* القائمة الجانبية الثابتة والأنيقة */
+/* القائمة الجانبية المتقدمة */
 .sidebar {
   width: 260px;
-  background-color: var(--bg-panel);
+  background-color: var(--panel-bg);
   border-right: 1px solid var(--border-color);
   padding: 24px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 8px;
   position: fixed;
   height: 100vh;
-  left: 0;
-  top: 0;
-  z-index: 100;
+  transition: all 0.3s ease;
 }
 
 .sidebar h1 {
-  font-size: 20px;
+  font-size: 22px;
+  margin: 0 0 32px 0;
   font-weight: 800;
-  margin-bottom: 32px;
-  color: var(--text-main);
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  color: var(--text-white);
 }
 
-/* أزرار التنقل التفاعلية */
 .sidebar button {
   background: none;
   border: none;
   color: var(--text-muted);
-  padding: 12px 16px;
-  border-radius: 8px;
-  text-align: left;
-  font-size: 15px;
-  font-weight: 500;
+  padding: 14px 16px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
   width: 100%;
+  margin-bottom: 8px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .sidebar button:hover {
-  background-color: rgba(255, 255, 255, 0.03);
-  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-white);
 }
 
 .sidebar button.active {
-  background-color: var(--purple);
-  color: #fff;
-  font-weight: 600;
-  box-shadow: 0 4px 12px rgba(140, 82, 255, 0.3);
+  background: var(--primary-color);
+  color: var(--text-white);
+  box-shadow: 0 4px 12px rgba(140, 82, 255, 0.25);
 }
 
-/* صناديق القائمة الجانبية السفلية */
-.streak {
+.sidebar .streak {
   margin-top: auto;
-  background: linear-gradient(135deg, #2c1a1d, #1d1215);
-  border: 1px solid #4a2228;
-  padding: 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  padding: 14px;
   border-radius: 12px;
-  font-size: 14px;
-  line-height: 1.5;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
 }
 
-.pro {
-  background: linear-gradient(135deg, #221c38, #161224);
-  border: 1px solid #3d2b6b;
+.sidebar .pro {
+  margin-top: 16px;
+  background: linear-gradient(135deg, #2196f3, #8c52ff);
   padding: 16px;
   border-radius: 12px;
   font-size: 13px;
-  margin-top: 12px;
-}
-
-.pro button {
-  background: var(--purple);
-  color: white;
-  margin-top: 12px;
   font-weight: bold;
-  text-align: center;
 }
 
-/* ==========================================================================
-   3. منطقة المحتوى والـ Header (Main Content Area)
-   ========================================================================== */
+.sidebar .pro button {
+  background: #fff;
+  color: #000;
+  margin-top: 10px;
+  margin-bottom: 0;
+  padding: 8px;
+  text-align: center;
+  justify-content: center;
+}
+
+/* المنطقة الرئيسية */
 .main {
   flex: 1;
-  margin-left: 260px; /* لتفادي الاختفاء خلف السايدبار الثابت */
   padding: 32px;
-  min-width: 0;
+  box-sizing: border-box;
+  overflow-y: auto;
 }
 
+/* الهيدر العلوي */
 .top {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 32px;
-  gap: 24px;
+  gap: 20px;
 }
 
 .top h2 {
-  font-size: 24px;
+  margin: 0;
+  font-size: 22px;
   font-weight: 700;
-  margin-bottom: 8px;
 }
 
-/* شريط الـ XP العلوي المطور */
 .xpbar {
   width: 180px;
   height: 6px;
-  background-color: var(--bg-card);
+  background: #252631;
   border-radius: 3px;
+  margin-top: 8px;
   overflow: hidden;
 }
 
 .xpbar div {
   height: 100%;
-  background-color: var(--purple);
+  background: var(--primary-color);
   border-radius: 3px;
-  transition: width 0.4s ease;
 }
 
 .top input {
-  background-color: var(--bg-panel);
+  background: var(--panel-bg);
   border: 1px solid var(--border-color);
-  color: white;
-  padding: 12px 20px;
+  color: #fff;
+  padding: 12px 16px;
   border-radius: 10px;
-  width: 320px;
+  width: 300px;
   font-size: 14px;
-  outline: none;
-}
-
-.top input:focus {
-  border-color: var(--purple);
 }
 
 .avatar {
   width: 42px;
   height: 42px;
+  background: var(--primary-color);
   border-radius: 50%;
-  background-color: var(--purple);
-  color: white;
   display: flex;
   align-items: center;
-  justifyContent: center;
+  justify-content: center;
   font-weight: bold;
+  font-size: 16px;
 }
 
-/* ==========================================================================
-   4. شبكة الإحصائيات والكروت (Grid & Panels System)
-   ========================================================================== */
+/* كروت الإحصائيات */
 .stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
+  gap: 16px;
   margin-bottom: 32px;
 }
 
 .stat {
-  background-color: var(--bg-panel);
+  background: var(--panel-bg);
   border: 1px solid var(--border-color);
-  padding: 24px;
-  border-radius: 16px;
+  padding: 20px;
+  border-radius: 14px;
   display: flex;
-  align-items: center;
-  gap: 16px;
-  position: relative;
-  overflow: hidden;
+  flex-direction: column;
 }
 
 .stat h2 {
+  margin: 8px 0 2px 0;
   font-size: 26px;
   font-weight: 800;
 }
 
 .stat p {
+  margin: 0;
   color: var(--text-muted);
   font-size: 13px;
-  margin-top: 2px;
 }
 
-/* لمسات الظلال الملونة للكروت */
-.stat.purple h2 { color: var(--purple); }
-.stat.blue h2 { color: var(--blue); }
-.stat.green h2 { color: var(--green); }
-.stat.orange h2 { color: var(--orange); }
-
-/* الـ Layout الشبكي المعقد للـ Panels */
+/* شبكة الداشبورد */
 .grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -233,7 +198,7 @@ body {
 }
 
 .panel {
-  background-color: var(--bg-panel);
+  background: var(--panel-bg);
   border: 1px solid var(--border-color);
   padding: 24px;
   border-radius: 16px;
@@ -244,147 +209,129 @@ body {
 }
 
 .panel h3 {
-  font-size: 18px;
+  margin: 0 0 20px 0;
+  font-size: 16px;
   font-weight: 700;
-  margin-bottom: 20px;
 }
 
-/* كروت تتابع التعلم */
+/* قائمة الكورسات بالداشبورد */
 .courses {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
 }
 
 .course {
-  background-color: var(--bg-card);
+  background: var(--card-bg);
   border: 1px solid var(--border-color);
-  padding: 16px;
+  padding: 14px 18px;
   border-radius: 12px;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex;
   align-items: center;
   gap: 16px;
 }
 
 .course .icon {
-  font-size: 24px;
-  width: 44px;
-  height: 44px;
-  background-color: var(--bg-panel);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-size: 22px;
 }
 
 .course p {
-  color: var(--text-muted);
+  margin: 0;
   font-size: 12px;
+  color: var(--text-muted);
+  width: 90px;
 }
 
 .course h3 {
-  font-size: 15px;
-  margin: 2px 0 0 0;
+  margin: 0;
+  font-size: 14px;
+  flex: 1;
 }
 
 .course .bar {
-  width: 120px;
+  width: 100px;
   height: 6px;
-  background-color: var(--bg-panel);
+  background: #12131a;
   border-radius: 3px;
   overflow: hidden;
-  position: relative;
 }
 
 .course .bar span {
   display: block;
   height: 100%;
-  background-color: var(--purple);
-  border-radius: 3px;
+  background: var(--primary-color);
 }
 
 .course small {
-  font-weight: bold;
-  color: var(--text-main);
-}
-
-/* لوحة الذكاء الاصطناعي - AI Coach */
-.panel.coach {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.panel.coach p {
   color: var(--text-muted);
-  font-size: 14px;
-  line-height: 1.5;
+  font-weight: bold;
 }
 
+/* الكوتش السريع */
 .panel.coach button {
-  background-color: var(--bg-card);
+  background: var(--card-bg);
   border: 1px solid var(--border-color);
-  color: var(--text-main);
-  padding: 12px 16px;
+  color: #fff;
+  width: 100%;
+  padding: 12px;
   border-radius: 10px;
   text-align: left;
-  font-size: 13px;
+  margin-bottom: 10px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  font-size: 13px;
+  transition: border 0.2s;
 }
 
 .panel.coach button:hover {
-  border-color: var(--purple);
-  background-color: rgba(140, 82, 255, 0.05);
+  border-color: var(--primary-color);
 }
 
 .panel.coach input {
-  background-color: var(--bg-card);
+  background: #12131a;
   border: 1px solid var(--border-color);
-  color: white;
+  color: #fff;
   padding: 12px;
   border-radius: 10px;
+  width: 100%;
+  box-sizing: border-box;
   font-size: 13px;
-  outline: none;
-  margin-top: auto;
 }
 
-/* مخطط الـ Charts الإحصائي */
+/* الرسم البياني للأسبوع */
 .chart {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  height: 160px;
-  padding-top: 20px;
+  height: 140px;
+  padding-top: 10px;
 }
 
 .chart div {
-  width: 32px;
-  background: linear-gradient(to top, var(--purple), #b18eff);
-  border-radius: 6px 6px 0 0;
-  transition: all 0.3s ease;
-  cursor: pointer;
+  width: 24px;
+  background: linear-gradient(to top, var(--primary-color), #b085ff);
+  border-radius: 4px;
+  transition: height 0.5s ease;
 }
 
-.chart div:hover {
-  filter: brightness(1.2);
-  box-shadow: 0 0 12px rgba(140, 82, 255, 0.4);
-}
-
-/* شارات الإنجازات المصغرة */
+/* شارات الإنجازات */
 .badges {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
+  text-align: center;
 }
 
 .badges span {
-  background-color: var(--bg-card);
+  background: var(--card-bg);
   border: 1px solid var(--border-color);
-  padding: 16px;
+  padding: 14px;
   border-radius: 12px;
-  text-align: center;
   font-size: 12px;
+  color: var(--text-muted);
   line-height: 1.6;
+}
+
+/* فئات خاصة للاتجاهات */
+.text-center {
+  text-align: center !important;
 }

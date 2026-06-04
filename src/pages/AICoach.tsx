@@ -1,134 +1,116 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 
 interface Message {
   id: string;
-  sender: 'user' | 'ai';
+  sender: 'user' | 'bot';
   text: string;
-  timestamp: Date;
+  time: string;
 }
 
 export default function AICoach() {
   const [messages, setMessages] = useState<Message[]>([
-    {
-      id: 'm1',
-      sender: 'ai',
-      text: 'Hello Ramadan! 👋 What would you like to learn or ask about today?',
-      timestamp: new Date(),
-    },
+    { id: '1', sender: 'bot', text: 'Hello Ramadan! 👋 I am your LearnNova AI Coach. What would you like to learn today?', time: 'Just now' }
   ]);
-  const [inputText, setInputText] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [input, setInput] = useState('');
 
-  const quickQuestions = [
-    'Explain photosynthesis 🌿',
-    'Help me with algebra 📐',
-    'Quiz me on physics ⚛️',
-  ];
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, isTyping]);
-
+  // دالة الإرسال المركزية
   const handleSendMessage = (textToSend: string) => {
-    if (!textToSend.trim()) return;
+    const targetText = textToSend.trim();
+    if (!targetText) return;
 
-    const userMessage: Message = {
-      id: `u-${Date.now()}`,
+    const userMsg: Message = {
+      id: Date.now().toString(),
       sender: 'user',
-      text: textToSend,
-      timestamp: new Date(),
+      text: targetText,
+      time: 'Just now'
     };
 
-    setMessages((prev) => [...prev, userMessage]);
-    setInputText('');
-    setIsTyping(true);
+    setMessages(prev => [...prev, userMsg]);
+    
+    // لو أرسل من حقل الإدخال نقوم بتفريغه
+    if (textToSend === input) {
+      setInput('');
+    }
 
-    // محاكاة رد الذكاء الاصطناعي بشكل ذكي بعد ثانيتين
+    // محاكاة رد الذكاء الاصطناعي الذكي سريعاً
     setTimeout(() => {
-      let aiResponseText = "That's a great question! Let's break it down step-by-step so you can master it easily.";
-      
-      if (textToSend.toLowerCase().includes('photosynthesis')) {
-        aiResponseText = "Photosynthesis is how plants make food! 🌿 They take in Carbon Dioxide ($CO_2$), Water ($H_2O$), and Sunlight, then convert them into Glucose (energy) and Release Oxygen ($O_2$).";
-      } else if (textToSend.toLowerCase().includes('algebra')) {
-        aiResponseText = "Algebra is all about finding the missing puzzle piece! 📐 For example, in $2x + 5 = 15$, we subtract 5 to get $2x = 10$, then divide by 2 to find $x = 5$. Ready for a practice problem?";
-      } else if (textToSend.toLowerCase().includes('physics')) {
-        aiResponseText = "Physics is the study of how the universe behaves! ⚛️ Think of Newton's Laws: An object won't move unless pushed, Force equals mass times acceleration ($F = ma$), and every action has an equal and opposite reaction!";
-      }
-
-      const aiMessage: Message = {
-        id: `ai-${Date.now()}`,
-        sender: 'ai',
-        text: aiResponseText,
-        timestamp: new Date(),
+      const botMsg: Message = {
+        id: (Date.now() + 1).toString(),
+        sender: 'bot',
+        text: `Excellent choice! Regarding your query about "${targetText}", let's break it down deeply. In professional practice, mastering this concept requires solid fundamentals and continuous daily practice. Let me know if you need a practical code example or formula analysis! 🚀`,
+        time: 'Just now'
       };
-
-      setMessages((prev) => [...prev, aiMessage]);
-      setIsTyping(false);
-    }, 1500);
+      setMessages(prev => [...prev, botMsg]);
+    }, 800);
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '500px', background: '#171821', borderRadius: '12px', border: '1px solid #2f303e', overflow: 'hidden', color: '#fff' }}>
-      {/* الهيدر */}
-      <div style={{ padding: '16px', background: '#21222d', borderBottom: '1px solid #2f303e', display: 'flex', alignItems: 'center', gap: '12px' }}>
-        <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#00e676', boxShadow: '0 0 8px #00e676' }} />
-        <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 'bold' }}>AI Coach</h3>
+    <div className="panel big" style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 160px)', background: '#171821', border: '1px solid #2f303e', borderRadius: '16px', padding: '24px' }}>
+      
+      {/* الهيدر الخاص بالشات */}
+      <div style={{ borderBottom: '1px solid #2f303e', paddingBottom: '16px', marginBottom: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div>
+          <h2 style={{ fontSize: '20px', color: '#fff' }}>🤖 AI Coach Chat</h2>
+          <p style={{ color: '#7a7a85', fontSize: '13px', marginTop: '4px' }}>Your personal intelligent academic assistant</p>
+        </div>
+        <span style={{ color: '#8c52ff', fontSize: '12px', background: 'rgba(140, 82, 255, 0.1)', padding: '6px 12px', borderRadius: '20px', fontWeight: 'bold' }}>Online</span>
       </div>
 
-      {/* منطقة الرسائل */}
-      <div style={{ flex: 1, padding: '16px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+      {/* منطقة الرسائل التفاعلية */}
+      <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '12px', paddingRight: '4px', marginBottom: '16px' }}>
         {messages.map((msg) => (
-          <div key={msg.id} style={{ alignSelf: msg.sender === 'user' ? 'flex-end' : 'flex-start', maxWidth: '80%' }}>
-            <div style={{
-              background: msg.sender === 'user' ? '#8c52ff' : '#21222d',
-              padding: '12px 16px',
-              borderRadius: msg.sender === 'user' ? '12px 12px 0 12px' : '12px 12px 12px 0',
-              fontSize: '14px',
-              lineHeight: '1.5',
-              border: msg.sender === 'user' ? 'none' : '1px solid #2f303e'
-            }}>
-              {msg.text}
-            </div>
-            <div style={{ fontSize: '10px', color: '#7a7a85', marginTop: '4px', textAlign: msg.sender === 'user' ? 'right' : 'left' }}>
-              {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-            </div>
+          <div key={msg.id} style={{
+            alignSelf: msg.sender === 'user' ? 'flex-end' : 'flex-start',
+            backgroundColor: msg.sender === 'user' ? '#8c52ff' : '#21222d',
+            border: msg.sender === 'user' ? 'none' : '1px solid #2f303e',
+            color: '#fff',
+            padding: '14px 18px',
+            borderRadius: msg.sender === 'user' ? '16px 16px 0 16px' : '16px 16px 16px 0',
+            maxWidth: '75%',
+            fontSize: '14px',
+            lineHeight: '1.5',
+            boxShadow: msg.sender === 'user' ? '0 4px 12px rgba(140, 82, 255, 0.2)' : 'none'
+          }}>
+            <p style={{ margin: 0 }}>{msg.text}</p>
+            <span style={{ display: 'block', fontSize: '10px', color: msg.sender === 'user' ? '#e1d5ff' : '#7a7a85', marginTop: '6px', textAlign: 'right' }}>{msg.time}</span>
           </div>
         ))}
-
-        {isTyping && (
-          <div style={{ alignSelf: 'flex-start', background: '#21222d', padding: '12px 16px', borderRadius: '12px 12px 12px 0', border: '1px solid #2f303e', display: 'flex', gap: '4px', alignItems: 'center' }}>
-            <div style={{ width: '6px', height: '6px', background: '#8c52ff', borderRadius: '50%', animation: 'bounce 1.4s infinite ease-in-out' }} />
-            <div style={{ width: '6px', height: '6px', background: '#8c52ff', borderRadius: '50%', animation: 'bounce 1.4s infinite ease-in-out 0.2s' }} />
-            <div style={{ width: '6px', height: '6px', background: '#8c52ff', borderRadius: '50%', animation: 'bounce 1.4s infinite ease-in-out 0.4s' }} />
-          </div>
-        )}
-        <div ref={messagesEndRef} />
       </div>
 
-      {/* اقتراحات الأسئلة */}
+      {/* الأزرار السريعة المأخوذة من واجهتك الأنيقة لزيادة سرعة التفاعل */}
       {messages.length === 1 && (
-        <div style={{ padding: '0 16px 8px 16px', display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-          {quickQuestions.map((q, i) => (
-            <button key={i} onClick={() => handleSendMessage(q)} style={{ background: '#21222d', border: '1px solid #2f303e', color: '#8c52ff', padding: '6px 12px', borderRadius: '20px', cursor: 'pointer', fontSize: '12px', fontWeight: '500', transition: 'all 0.2s' }}>
-              {q} →
-            </button>
-          ))}
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '16px' }}>
+          <button onClick={() => handleSendMessage("Explain photosynthesis")} style={{ background: '#21222d', border: '1px solid #2f303e', color: '#fff', padding: '8px 14px', borderRadius: '20px', cursor: 'pointer', fontSize: '12px', transition: 'all 0.2s' }}>
+            Explain photosynthesis ↗
+          </button>
+          <button onClick={() => handleSendMessage("Help me with algebra")} style={{ background: '#21222d', border: '1px solid #2f303e', color: '#fff', padding: '8px 14px', borderRadius: '20px', cursor: 'pointer', fontSize: '12px', transition: 'all 0.2s' }}>
+            Help me with algebra ↗
+          </button>
+          <button onClick={() => handleSendMessage("Quiz me on physics")} style={{ background: '#21222d', border: '1px solid #2f303e', color: '#fff', padding: '8px 14px', borderRadius: '20px', cursor: 'pointer', fontSize: '12px', transition: 'all 0.2s' }}>
+            Quiz me on physics ↗
+          </button>
         </div>
       )}
 
-      {/* صندوق الإدخال */}
-      <div style={{ padding: '12px', background: '#21222d', borderTop: '1px solid #2f303e', display: 'flex', gap: '8px' }}>
-        <input
-          type="text"
-          value={inputText}
-          onChange={(e) => setInputText(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && handleSendMessage(inputText)}
-          placeholder="Ask your question..."
-          style={{ flex: 1, background: '#171821', border: '1px solid #2f303e', borderRadius: '8px', padding: '10px 14px', color: '#fff', fontSize: '14px', outline: 'none' }}
+      {/* منطقة الإدخال وزر الإرسال */}
+      <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+        <input 
+          type="text" 
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && handleSendMessage(input)}
+          placeholder="Ask your question..." 
+          style={{ flex: 1, background: '#21222d', border: '1px solid #2f303e', color: '#fff', padding: '14px', borderRadius: '12px', fontSize: '14px', outline: 'none', transition: 'border-color 0.2s' }}
+          onFocus={(e) => e.target.style.borderColor = '#8c52ff'}
+          onBlur={(e) => e.target.style.borderColor = '#2f303e'}
         />
-        <button onClick={() => handleSendMessage(inputText)} style={{ background: '#8c52ff', border: 'none', borderRadius: '8px', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#fff' }}>
-          ➔
+        <button 
+          onClick={() => handleSendMessage(input)}
+          style={{ background: '#8c52ff', color: '#fff', border: 'none', padding: '14px 28px', borderRadius: '12px', cursor: 'pointer', fontWeight: 'bold', fontSize: '14px', boxShadow: '0 4px 12px rgba(140, 82, 255, 0.3)', transition: 'transform 0.1s' }}
+          onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.98)'}
+          onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
+        >
+          Send
         </button>
       </div>
     </div>

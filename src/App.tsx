@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "./App.css";
 
 const courses = [
@@ -8,6 +9,9 @@ const courses = [
 ];
 
 export default function App() {
+  const [xp, setXp] = useState(2450);
+  const level = Math.floor(xp / 200);
+
   return (
     <div className="app">
       <aside className="sidebar">
@@ -26,14 +30,19 @@ export default function App() {
 
       <main className="main">
         <header className="top">
-          <h2>Welcome back, Ramadan! 👋</h2>
+          <div>
+            <h2>Welcome back, Ramadan! 👋</h2>
+            <div className="xpbar">
+              <div style={{ width: `${xp % 200}%` }}></div>
+            </div>
+          </div>
           <input placeholder="Search courses, quizzes..." />
           <div className="avatar">R</div>
         </header>
 
         <section className="stats">
-          <div className="stat purple">⭐ <h2>2450</h2><p>Total XP</p></div>
-          <div className="stat blue">🎖️ <h2>12</h2><p>Level</p></div>
+          <div className="stat purple">⭐ <h2>{xp}</h2><p>Total XP</p></div>
+          <div className="stat blue">🎖️ <h2>{level}</h2><p>Level</p></div>
           <div className="stat green">📖 <h2>24</h2><p>Courses Completed</p></div>
           <div className="stat orange">🏆 <h2>8</h2><p>Achievements</p></div>
         </section>
@@ -43,11 +52,13 @@ export default function App() {
             <h3>📚 Continue Learning</h3>
             <div className="courses">
               {courses.map((c) => (
-                <div className="course" key={c[1]}>
+                <div className="course" key={c[1].toString()}>
                   <div className="icon">{c[0]}</div>
                   <p>{c[1]}</p>
                   <h3>{c[2]}</h3>
-                  <div className="bar"><span style={{ width: `${c[3]}%` }} /></div>
+                  <div className="bar">
+                    <span style={{ width: `${c[3]}%` }} />
+                  </div>
                   <small>{c[3]}%</small>
                 </div>
               ))}
@@ -57,8 +68,12 @@ export default function App() {
           <div className="panel coach">
             <h3>🤖 AI Coach</h3>
             <p>Hello Ramadan! What would you like to learn today?</p>
-            <button>Explain photosynthesis →</button>
-            <button>Help me with algebra →</button>
+            <button onClick={() => setXp(xp + 50)}>
+              Explain photosynthesis → (+50 XP)
+            </button>
+            <button onClick={() => setXp(xp + 50)}>
+              Help me with algebra → (+50 XP)
+            </button>
             <input placeholder="Ask your question..." />
           </div>
 

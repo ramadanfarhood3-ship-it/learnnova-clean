@@ -1,73 +1,98 @@
 import { useState } from "react";
 import "./App.css";
 
+const courses = [
+  { name: "Mathematik", icon: "📐", progress: 82 },
+  { name: "Englisch", icon: "🇬🇧", progress: 64 },
+  { name: "Deutsch", icon: "📖", progress: 71 },
+  { name: "Physik", icon: "⚛️", progress: 45 },
+];
+
 export default function App() {
-  const [xp] = useState(2450);
-  const [level] = useState(15);
-  const [streak] = useState(12);
+  const [dark, setDark] = useState(false);
+  const [xp, setXp] = useState(2450);
+
+  function startQuiz() {
+    setXp(xp + 50);
+    alert("✅ Richtig! +50 XP");
+  }
 
   return (
-    <div className="app">
-      <header className="header">
-        <h1>🎓 LearnNova</h1>
-        <p>Deine intelligente Lernplattform</p>
-      </header>
+    <div className={dark ? "app dark" : "app"}>
+      <aside className="sidebar">
+        <h2>🎓 LearnNova</h2>
+        <button>📊 Dashboard</button>
+        <button>📚 Kurse</button>
+        <button>🏆 Erfolge</button>
+        <button>🤖 KI-Coach</button>
+        <button onClick={() => setDark(!dark)}>
+          {dark ? "☀️ Light Mode" : "🌙 Dark Mode"}
+        </button>
+      </aside>
 
-      <section className="stats">
-        <div className="card">
-          <h2>🏆 XP</h2>
-          <p>{xp}</p>
-        </div>
+      <main className="main">
+        <header className="hero">
+          <h1>Willkommen zurück, Ramadan! 🚀</h1>
+          <p>Heute hast du schon 240 XP gesammelt. Mach weiter so!</p>
+        </header>
 
-        <div className="card">
-          <h2>⭐ Level</h2>
-          <p>{level}</p>
-        </div>
+        <section className="stats">
+          <div className="card">🏆 <h2>{xp}</h2><p>Gesamt XP</p></div>
+          <div className="card">⭐ <h2>15</h2><p>Level</p></div>
+          <div className="card">🔥 <h2>12</h2><p>Tage Streak</p></div>
+          <div className="card">✅ <h2>87%</h2><p>Erfolgsquote</p></div>
+        </section>
 
-        <div className="card">
-          <h2>🔥 Streak</h2>
-          <p>{streak} Tage</p>
-        </div>
-      </section>
+        <section>
+          <h2>📚 Deine Kurse</h2>
+          <div className="course-grid">
+            {courses.map((course) => (
+              <div className="course" key={course.name}>
+                <h3>{course.icon} {course.name}</h3>
+                <div className="progress-bar">
+                  <div style={{ width: `${course.progress}%` }}></div>
+                </div>
+                <p>{course.progress}% abgeschlossen</p>
+              </div>
+            ))}
+          </div>
+        </section>
 
-      <section className="courses">
-        <h2>📚 Kurse</h2>
+        <section className="split">
+          <div className="panel">
+            <h2>🎯 Quiz</h2>
+            <p>Teste dein Wissen und sammle XP.</p>
+            <button className="primary" onClick={startQuiz}>
+              Quiz starten
+            </button>
+          </div>
 
-        <div className="course-grid">
-          <div className="course">📐 Mathematik</div>
-          <div className="course">🇬🇧 Englisch</div>
-          <div className="course">📖 Deutsch</div>
-          <div className="course">⚛️ Physik</div>
-        </div>
-      </section>
+          <div className="panel">
+            <h2>🤖 KI-Coach</h2>
+            <p>Frage deinen Lernassistenten nach Hilfe.</p>
+            <input placeholder="z.B. Erkläre mir Brüche..." />
+          </div>
+        </section>
 
-      <section className="progress-section">
-        <h2>📈 Fortschritt</h2>
+        <section>
+          <h2>🏆 Achievements</h2>
+          <div className="badge-grid">
+            <div className="badge">🥇 Erste Übung</div>
+            <div className="badge">🔥 7 Tage Streak</div>
+            <div className="badge">⭐ 100 XP</div>
+            <div className="badge">🎓 Mathe Profi</div>
+          </div>
+        </section>
 
-        <div className="progress-bar">
-          <div
-            className="progress-fill"
-            style={{ width: "75%" }}
-          ></div>
-        </div>
-
-        <p>75% abgeschlossen</p>
-      </section>
-
-      <section className="achievements">
-        <h2>🏆 Achievements</h2>
-
-        <div className="badge-grid">
-          <div className="badge">🥇 Erste Übung</div>
-          <div className="badge">🔥 7 Tage Streak</div>
-          <div className="badge">⭐ 100 XP</div>
-          <div className="badge">🎓 Mathematik Profi</div>
-        </div>
-      </section>
-
-      <button className="quiz-btn">
-        🎯 Quiz starten
-      </button>
+        <section>
+          <h2>🥇 Leaderboard</h2>
+          <div className="leaderboard">
+            <p>1. Anna — 5200 XP</p>
+            <p>2. Max — 4800 XP</p>
+            <p>3. Ramadan — {xp} XP</p>
+          </div>
+        </section>
+      </main>
     </div>
   );
 }

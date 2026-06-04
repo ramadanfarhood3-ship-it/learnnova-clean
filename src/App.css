@@ -1,3 +1,195 @@
 body {
   margin: 0;
+  font-family: Inter, Arial, sans-serif;
+}
+
+.app {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #eef2ff, #f8fafc);
+  color: #111827;
+}
+
+.dark {
+  background: linear-gradient(135deg, #020617, #0f172a);
+  color: white;
+}
+
+.sidebar {
+  width: 260px;
+  background: rgba(17, 24, 39, 0.96);
+  color: white;
+  padding: 26px;
+  box-shadow: 10px 0 30px rgba(0,0,0,0.25);
+}
+
+.sidebar h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+.profile {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  padding: 22px;
+  border-radius: 24px;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.avatar {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  background: white;
+  color: #4f46e5;
+  display: grid;
+  place-items: center;
+  margin: auto;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.sidebar button {
+  width: 100%;
+  margin: 10px 0;
+  padding: 14px;
+  border: none;
+  border-radius: 16px;
+  background: #1f2937;
+  color: white;
+  text-align: left;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.sidebar button:hover {
+  background: #4f46e5;
+  transform: translateX(5px);
+}
+
+.main {
+  flex: 1;
+  padding: 34px;
+}
+
+.hero {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed, #ec4899);
+  color: white;
+  padding: 38px;
+  border-radius: 30px;
+  margin-bottom: 28px;
+  box-shadow: 0 20px 45px rgba(79,70,229,0.35);
+}
+
+.hero h1 {
+  font-size: 42px;
+  margin: 0;
+}
+
+.stats,
+.course-grid,
+.split,
+.badge-grid,
+.plan-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 22px;
+  margin: 22px 0 38px;
+}
+
+.card,
+.course,
+.panel,
+.badge,
+.leaderboard,
+.daily,
+.plan-card {
+  background: rgba(255,255,255,0.86);
+  color: #111827;
+  padding: 24px;
+  border-radius: 24px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+  backdrop-filter: blur(14px);
+  transition: 0.25s;
+}
+
+.card:hover,
+.course:hover,
+.panel:hover,
+.badge:hover,
+.plan-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 22px 45px rgba(79,70,229,0.18);
+}
+
+.dark .card,
+.dark .course,
+.dark .panel,
+.dark .badge,
+.dark .leaderboard,
+.dark .daily,
+.dark .plan-card {
+  background: #1e293b;
+  color: white;
+}
+
+.card h2 {
+  font-size: 32px;
+  margin: 8px 0;
+}
+
+.progress-bar {
+  height: 14px;
+  background: #e5e7eb;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.progress-bar div {
+  height: 100%;
+  background: linear-gradient(90deg, #4f46e5, #22c55e);
+  border-radius: 20px;
+}
+
+.primary {
+  padding: 13px 20px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid #ddd;
+  margin: 10px 0;
+}
+
+.answer {
+  background: #eef2ff;
+  padding: 14px;
+  border-radius: 14px;
+}
+
+.dark .answer {
+  background: #334155;
+}
+
+@media (max-width: 750px) {
+  .app {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: auto;
+  }
+
+  .hero h1 {
+    font-size: 30px;
+  }
 }

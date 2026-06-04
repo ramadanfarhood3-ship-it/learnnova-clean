@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 
-// استيراد المكونات والبيانات
+// الاستيرادات الأساسية
 import { mockUserStats, translations } from "./data/mockData";
 import Quiz from "./pages/Quiz";
 import AICoach from "./pages/AICoach";
@@ -11,6 +11,7 @@ import Analytics from "./pages/Analytics";
 import CoursesPage from "./pages/Courses";
 import Settings from "./pages/Settings";
 import NovaStore from "./pages/NovaStore";
+import Pomodoro from "./pages/Pomodoro"; // استيراد عداد التركيز
 
 const courses = [
   ["📐", "Mathematik", "Algebra Basics", 82],
@@ -49,6 +50,11 @@ export default function App() {
       case 'dashboard':
         return (
           <section className="grid">
+            {/* إضافة عداد بومودورو في بداية الداشبورد */}
+            <div className="panel full-width">
+              <Pomodoro lang={lang} onCompleteSession={handleEarnXP} />
+            </div>
+
             <div className="panel big">
               <h3>{t.continue}</h3>
               <div className="courses">
@@ -57,9 +63,7 @@ export default function App() {
                     <div className="icon">{c[0]}</div>
                     <p>{c[1]}</p>
                     <h3>{c[2]}</h3>
-                    <div className="bar">
-                      <span style={{ width: `${c[3]}%` }} />
-                    </div>
+                    <div className="bar"><span style={{ width: `${c[3]}%` }} /></div>
                     <small>{c[3]}%</small>
                   </div>
                 ))}
@@ -72,25 +76,6 @@ export default function App() {
               <button onClick={() => handleEarnXP(50)}>Explain photosynthesis → (+50 XP)</button>
               <button onClick={() => handleEarnXP(50)}>Help me with algebra → (+50 XP)</button>
               <input placeholder={t.ask} onKeyDown={(e) => e.key === 'Enter' && setActiveTab('ai-coach')} />
-            </div>
-
-            <div className="panel big">
-              <h3>{t.weekly}</h3>
-              <div className="chart">
-                {[35, 55, 80, 60, 72, 95, 85].map((h, i) => (
-                  <div key={i} style={{ height: `${h}%` }} />
-                ))}
-              </div>
-            </div>
-
-            <div className="panel">
-              <h3>{t.achievements}</h3>
-              <div className="badges">
-                <span>🏅<br />{t.firstQuiz}</span>
-                <span>💜<br />100 XP</span>
-                <span>💎<br />500 XP</span>
-                <span>🔒<br />1000 XP</span>
-              </div>
             </div>
           </section>
         );
@@ -114,41 +99,22 @@ export default function App() {
         <button className={activeTab === 'courses' ? 'active' : ''} onClick={() => setActiveTab('courses')}>{t.courses}</button>
         <button className={activeTab === 'quiz' ? 'active' : ''} onClick={() => setActiveTab('quiz')}>{t.quiz}</button>
         <button className={activeTab === 'ai-coach' ? 'active' : ''} onClick={() => setActiveTab('ai-coach')}>{t.aiCoach}</button>
-        <button className={activeTab === 'achievements' ? 'active' : ''} onClick={() => setActiveTab('achievements')}>{t.achievements}</button>
         <button className={activeTab === 'analytics' ? 'active' : ''} onClick={() => setActiveTab('analytics')}>{t.analytics}</button>
-        <button className={activeTab === 'profile' ? 'active' : ''} onClick={() => setActiveTab('profile')}>{t.profile}</button>
         <button className={activeTab === 'store' ? 'active' : ''} onClick={() => setActiveTab('store')}>🛍️ Rewards Store</button>
         <button className={activeTab === 'settings' ? 'active' : ''} onClick={() => setActiveTab('settings')}>⚙️ Settings</button>
 
         <div className="streak">🔥 <b>{mockUserStats.streak}</b><br />{t.streak}</div>
-        <div className="pro text-center">⭐ {t.upgrade}<br /><button>{t.upgradeBtn}</button></div>
       </aside>
 
       <main className="main" style={{ marginLeft: lang === 'ar' ? 0 : '260px', marginRight: lang === 'ar' ? '260px' : 0 }}>
         <header className="top">
-          <div>
-            <h2>{t.welcome}</h2>
-            <div className="xpbar"><div style={{ width: `${(userXP % 200) / 2}%` }}></div></div>
+          <div><h2>{t.welcome}</h2></div>
+          <div style={{ display: 'flex', gap: '6px' }}>
+            <button onClick={() => setLang('en')}>EN</button>
+            <button onClick={() => setLang('ar')}>AR</button>
+            <button onClick={() => setLang('de')}>DE</button>
           </div>
-          
-          <input placeholder={t.search} />
-
-          <div style={{ display: 'flex', gap: '6px', background: '#171821', padding: '6px', borderRadius: '10px', border: '1px solid #2f303e' }}>
-            <button onClick={() => setLang('en')} style={{ background: lang === 'en' ? '#8c52ff' : 'none', color: '#fff', border: 'none', padding: '6px 10px', borderRadius: '6px', cursor: 'pointer' }}>EN</button>
-            <button onClick={() => setLang('ar')} style={{ background: lang === 'ar' ? '#8c52ff' : 'none', color: '#fff', border: 'none', padding: '6px 10px', borderRadius: '6px', cursor: 'pointer' }}>AR</button>
-            <button onClick={() => setLang('de')} style={{ background: lang === 'de' ? '#8c52ff' : 'none', color: '#fff', border: 'none', padding: '6px 10px', borderRadius: '6px', cursor: 'pointer' }}>DE</button>
-          </div>
-
-          <div className="avatar" style={{ cursor: 'pointer' }} onClick={() => setActiveTab('profile')}>R</div>
         </header>
-
-        <section className="stats">
-          <div className="stat purple">⭐ <h2>{userXP}</h2><p>{t.totalXp}</p></div>
-          <div className="stat blue">🎖️ <h2>{userLevel}</h2><p>{t.level}</p></div>
-          <div className="stat green">📖 <h2>{mockUserStats.coursesCompleted}</h2><p>{t.completed}</p></div>
-          <div className="stat orange">🏆 <h2>{mockUserStats.achievementsCount}</h2><p>{t.achievements}</p></div>
-        </section>
-
         {renderContent()}
       </main>
     </div>

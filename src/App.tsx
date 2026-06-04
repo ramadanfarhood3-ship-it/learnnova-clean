@@ -1,105 +1,86 @@
-import { useEffect, useState } from "react";
 import "./App.css";
 
 const courses = [
-  { name: "Mathematik", icon: "📐", progress: 82 },
-  { name: "Englisch", icon: "🇬🇧", progress: 64 },
-  { name: "Deutsch", icon: "📖", progress: 71 },
-  { name: "Physik", icon: "⚛️", progress: 45 },
+  ["📐", "Mathematik", "Algebra Basics", 82],
+  ["⚛️", "Physik", "Newton's Laws", 64],
+  ["💻", "Informatik", "React Basics", 45],
+  ["🇬🇧", "Englisch", "Grammar Mastery", 90],
 ];
 
 export default function App() {
-  const [dark, setDark] = useState(false);
-  const [xp, setXp] = useState(2450);
-
-  useEffect(() => {
-    const savedXp = localStorage.getItem("learnnova-xp");
-    const savedDark = localStorage.getItem("learnnova-dark");
-
-    if (savedXp) setXp(Number(savedXp));
-    if (savedDark === "true") setDark(true);
-  }, []);
-
-  const level = Math.floor(xp / 200);
-
   return (
-    <div className={dark ? "app dark" : "app"}>
+    <div className="app">
       <aside className="sidebar">
-        <h2>🚨 NEW VERSION 🚨</h2>
+        <h1>🦄 LearnNova</h1>
+        <button className="active">🏠 Dashboard</button>
+        <button>📚 Courses</button>
+        <button>❔ Quiz</button>
+        <button>🤖 AI Coach</button>
+        <button>🏆 Achievements</button>
+        <button>📊 Analytics</button>
+        <button>👤 Profile</button>
 
-        <div className="profile">
-          <div className="avatar">R</div>
-          <h3>Ramadan</h3>
-          <p>Level {level}</p>
-          <p>{xp} XP</p>
-        </div>
-
-        <button>📊 Dashboard</button>
-        <button>📚 Kurse</button>
-        <button>🏆 Erfolge</button>
-        <button>🤖 KI-Coach</button>
-
-        <button onClick={() => setDark(!dark)}>
-          {dark ? "☀️ Light Mode" : "🌙 Dark Mode"}
-        </button>
+        <div className="streak">🔥 <b>12</b><br />Day Streak</div>
+        <div className="pro">⭐ Upgrade to Pro<br /><button>Upgrade Now</button></div>
       </aside>
 
       <main className="main">
-        <header
-          className="hero"
-          style={{
-            background: "red",
-            color: "yellow",
-            textAlign: "center",
-          }}
-        >
-          <h1>🚨 RAMADAN TEST 999 🚨</h1>
-          <p>THIS IS NEW VERSION 999</p>
+        <header className="top">
+          <h2>Welcome back, Ramadan! 👋</h2>
+          <input placeholder="Search courses, quizzes..." />
+          <div className="avatar">R</div>
         </header>
 
         <section className="stats">
-          <div className="card">
-            <h2>{xp}</h2>
-            <p>XP</p>
-          </div>
-
-          <div className="card">
-            <h2>{level}</h2>
-            <p>Level</p>
-          </div>
-
-          <div className="card">
-            <h2>12</h2>
-            <p>Streak</p>
-          </div>
-
-          <div className="card">
-            <h2>87%</h2>
-            <p>Erfolg</p>
-          </div>
+          <div className="stat purple">⭐ <h2>2450</h2><p>Total XP</p></div>
+          <div className="stat blue">🎖️ <h2>12</h2><p>Level</p></div>
+          <div className="stat green">📖 <h2>24</h2><p>Courses Completed</p></div>
+          <div className="stat orange">🏆 <h2>8</h2><p>Achievements</p></div>
         </section>
 
-        <h2>📚 Kurse</h2>
-
-        <div className="course-grid">
-          {courses.map((course) => (
-            <div className="course" key={course.name}>
-              <h3>
-                {course.icon} {course.name}
-              </h3>
-
-              <div className="progress-bar">
-                <div
-                  style={{
-                    width: `${course.progress}%`,
-                  }}
-                ></div>
-              </div>
-
-              <p>{course.progress}%</p>
+        <section className="grid">
+          <div className="panel big">
+            <h3>📚 Continue Learning</h3>
+            <div className="courses">
+              {courses.map((c) => (
+                <div className="course" key={c[1]}>
+                  <div className="icon">{c[0]}</div>
+                  <p>{c[1]}</p>
+                  <h3>{c[2]}</h3>
+                  <div className="bar"><span style={{ width: `${c[3]}%` }} /></div>
+                  <small>{c[3]}%</small>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
+
+          <div className="panel coach">
+            <h3>🤖 AI Coach</h3>
+            <p>Hello Ramadan! What would you like to learn today?</p>
+            <button>Explain photosynthesis →</button>
+            <button>Help me with algebra →</button>
+            <input placeholder="Ask your question..." />
+          </div>
+
+          <div className="panel big">
+            <h3>📊 Weekly Progress</h3>
+            <div className="chart">
+              {[35, 55, 80, 60, 72, 95, 85].map((h, i) => (
+                <div key={i} style={{ height: `${h}%` }} />
+              ))}
+            </div>
+          </div>
+
+          <div className="panel">
+            <h3>🏆 Achievements</h3>
+            <div className="badges">
+              <span>🏅<br />First Quiz</span>
+              <span>💜<br />100 XP</span>
+              <span>💎<br />500 XP</span>
+              <span>🔒<br />1000 XP</span>
+            </div>
+          </div>
+        </section>
       </main>
     </div>
   );

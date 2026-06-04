@@ -81,6 +81,17 @@ export default function App() {
 
         <section className="daily">
           <h2>🎯 Tagesziel</h2>
+          <section className="chart">
+  <h2>📊 Lernfortschritt</h2>
+
+  <div className="bars">
+    <div style={{ height: "70%" }}><span>Mo</span></div>
+    <div style={{ height: "85%" }}><span>Di</span></div>
+    <div style={{ height: "50%" }}><span>Mi</span></div>
+    <div style={{ height: "95%" }}><span>Do</span></div>
+    <div style={{ height: "80%" }}><span>Fr</span></div>
+  </div>
+</section>
           <p>30 Minuten Lernen</p>
           <div className="progress-bar">
             <div style={{ width: "70%" }}></div>

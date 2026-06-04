@@ -10,11 +10,13 @@ import Profile from "./pages/Profile";
 import Analytics from "./pages/Analytics"; 
 import CoursesPage from "./pages/Courses";
 
+// المصفوفة المحدثة: تم استبدال Englisch بـ Spanisch وإضافة مادة Geographie
 const courses = [
   ["📐", "Mathematik", "Algebra Basics", 82],
   ["⚛️", "Physik", "Newton's Laws", 64],
   ["💻", "Informatik", "React Basics", 45],
-  ["🇬🇧", "Englisch", "Grammar Mastery", 90],
+  ["🇪🇸", "Spanisch", "Vocabulary & Basics", 30], // مكان Englisch
+  ["🌍", "Geographie", "World Map & Climates", 15], // المادة المضافة الجديدة
 ];
 
 export default function App() {
@@ -149,7 +151,7 @@ export default function App() {
           
           <input placeholder={t.search} />
 
-          {/* أزرار اختيار اللغات المبتكرة في الهيدر العلوي */}
+          {/* أزرار اختيار اللغات في الهيدر العلوي */}
           <div style={{ display: 'flex', gap: '6px', background: '#171821', padding: '6px', borderRadius: '10px', border: '1px solid #2f303e' }}>
             <button onClick={() => setLang('en')} style={{ background: lang === 'en' ? '#8c52ff' : 'none', color: '#fff', border: 'none', padding: '6px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '12px', fontWeight: 'bold' }}>EN</button>
             <button onClick={() => setLang('ar')} style={{ background: lang === 'ar' ? '#8c52ff' : 'none', color: '#fff', border: 'none', padding: '6px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '12px', fontWeight: 'bold' }}>AR</button>
@@ -171,3 +173,4 @@ export default function App() {
     </div>
   );
 }
+

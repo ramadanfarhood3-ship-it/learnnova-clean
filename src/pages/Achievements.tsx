@@ -1,72 +1,82 @@
-import { mockAchievements } from '../data/mockData';
+import { mockUserStats } from '../data/mockData';
+
+interface AchievementItem {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  requiredXp: number;
+  color: string;
+}
+
+const allBadges: AchievementItem[] = [
+  { id: '1', title: 'First Quiz Master', description: 'Completed your first live evaluation quiz successfully.', icon: '🏅', requiredXp: 100, color: '#4caf50' },
+  { id: '2', title: 'XP Century Club', description: 'Accumulated over 100 XP across various academic disciplines.', icon: '💜', requiredXp: 100, color: '#8c52ff' },
+  { id: '3', title: 'Elite Scholar Tier', description: 'Crossed the 300 XP threshold to cement your learning consistency.', icon: '💎', requiredXp: 300, color: '#00bcd4' },
+  { id: '4', title: 'Ultimate Grandmaster', description: 'Reach a staggering 1000 XP to unlock final academic supremacy.', icon: '👑', requiredXp: 1000, color: '#ff9800' },
+];
 
 export default function Achievements() {
+  // نعتمد هنا على الـ XP المسجل في الـ mockData للتحقق من فتح الشارة
+  const currentXp = mockUserStats.xp;
+
   return (
-    <div style={{ padding: "24px", background: "#171821", borderRadius: "12px", color: "#fff", border: "1px solid #2f303e" }}>
-      <div style={{ marginBottom: "24px" }}>
-        <h2 style={{ margin: "0 0 8px 0", fontSize: "22px", fontWeight: "bold" }}>Badges & Achievements</h2>
-        <p style={{ margin: 0, color: "#7a7a85", fontSize: "14px" }}>Track your learning milestones and collected points.</p>
+    <div className="panel big" style={{ background: '#171821', color: '#fff', padding: '28px', borderRadius: '16px', border: '1px solid #2f303e' }}>
+      
+      {/* هيدر الصفحة */}
+      <div style={{ borderBottom: '1px solid #2f303e', paddingBottom: '16px', marginBottom: '24px' }}>
+        <h2 style={{ fontSize: '20px', margin: 0 }}>🏆 Academic Achievements & Badges</h2>
+        <p style={{ color: '#7a7a85', fontSize: '13px', marginTop: '4px' }}>Track your milestone unlocks and claim your bragging rights as you study.</p>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: "16px" }}>
-        {mockAchievements.map((ach) => {
-          // تحديد الأيقونة المناسبة بناءً على حالة القفل
-          let badgeIcon = '⭐';
-          if (ach.unlocked) {
-            if (ach.iconType === 'quiz') badgeIcon = '🏆';
-            if (ach.iconType === 'xp') badgeIcon = '✨';
-          } else {
-            badgeIcon = '🔒';
-          }
+      {/* شبكة عرض الشارات الاحترافية */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '20px' }}>
+        {allBadges.map((badge) => {
+          const isUnlocked = currentXp >= badge.requiredXp;
 
           return (
             <div 
-              key={ach.id} 
-              style={{
-                background: "#21222d",
-                border: "1px solid " + (ach.unlocked ? "#2f303e" : "#3a1d28"),
-                borderRadius: "12px",
-                padding: "16px",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                textAlign: "center",
-                opacity: ach.unlocked ? 1 : 0.6
+              key={badge.id} 
+              style={{ 
+                background: '#21222d', 
+                border: `1px solid ${isUnlocked ? badge.color : '#2f303e'}`, 
+                padding: '24px', 
+                borderRadius: '14px', 
+                position: 'relative',
+                opacity: isUnlocked ? 1 : 0.6,
+                transition: 'transform 0.2s',
+                boxShadow: isUnlocked ? `0 4px 14px ${badge.color}15` : 'none'
               }}
             >
-              <div style={{
-                width: "56px",
-                height: "56px",
-                borderRadius: "50%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                marginBottom: "12px",
-                background: !ach.unlocked ? "#171821" : (ach.iconType === 'quiz' ? "rgba(76, 175, 80, 0.15)" : "rgba(140, 82, 255, 0.15)"),
-                color: !ach.unlocked ? "#7a7a85" : (ach.iconType === 'quiz' ? "#4caf50" : "#8c52ff"),
-                fontSize: "24px",
-                border: "2px solid " + (!ach.unlocked ? "#2f303e" : "transparent")
-              }}>
-                {badgeIcon}
+              {/* أيقونة القفل أو الشارة */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+                <span style={{ fontSize: '36px', filter: isUnlocked ? 'none' : 'grayscale(100%)' }}>
+                  {badge.icon}
+                </span>
+                <span style={{ 
+                  fontSize: '11px', 
+                  fontWeight: 'bold', 
+                  color: isUnlocked ? '#fff' : '#7a7a85', 
+                  background: isUnlocked ? badge.color : '#171821', 
+                  padding: '4px 10px', 
+                  borderRadius: '20px' 
+                }}>
+                  {isUnlocked ? 'UNLOCKED' : `LOCKED (${badge.requiredXp} XP)`}
+                </span>
               </div>
 
-              <h4 style={{ margin: "0 0 4px 0", fontSize: "15px", fontWeight: "bold" }}>{ach.title}</h4>
-              <p style={{ margin: "0 0 12px 0", color: "#7a7a85", fontSize: "12px" }}>{ach.description}</p>
-              
-              <span style={{
-                fontSize: "11px",
-                fontWeight: "bold",
-                padding: "4px 8px",
-                borderRadius: "6px",
-                background: ach.unlocked ? "rgba(140, 82, 255, 0.2)" : "#171821",
-                color: ach.unlocked ? "#8c52ff" : "#7a7a85"
-              }}>
-                {ach.xpValue} XP
-              </span>
+              {/* تفاصيل الشارة */}
+              <h4 style={{ fontSize: '16px', margin: '0 0 6px 0', color: isUnlocked ? '#fff' : '#7a7a85' }}>
+                {badge.title}
+              </h4>
+              <p style={{ color: '#7a7a85', fontSize: '12px', margin: 0, lineHeight: '1.5' }}>
+                {badge.description}
+              </p>
             </div>
           );
         })}
       </div>
+
     </div>
   );
 }

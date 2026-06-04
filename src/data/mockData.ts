@@ -1,5 +1,4 @@
-// 1. تعريف الأنواع (TypeScript Interfaces) لضمان دقة البيانات
-
+// 1. واجهة البيانات الخاصة بإحصائيات المستخدم
 export interface UserStats {
   name: string;
   xp: number;
@@ -10,33 +9,27 @@ export interface UserStats {
   weeklyProgress: { day: string; xp: number; time: number }[];
 }
 
-export interface Course {
-  id: string;
-  title: string;
-  category: string;
-  progress: number; // للـ Continue Learning (نسبة مئوية)
-  lessonsCount?: number; // للـ Recommended
-  icon?: string;
-}
-
+// 2. واجهة البيانات الخاصة بأسئلة الكويز
 export interface QuizQuestion {
   id: string;
   question: string;
   options: string[];
-  correctAnswer: number; // الـ Index الخاص بالإجابة الصحيحة (0, 1, 2, 3)
+  correctAnswer: number;
 }
 
+// 3. واجهة البيانات الخاصة بالأوسمة
 export interface Achievement {
   id: string;
   title: string;
   description: string;
-  unlocked: boolean;
   xpValue: number;
-  iconType: 'quiz' | 'xp' | 'streak' | 'math' | 'lock';
+  unlocked: boolean;
+  iconType: 'quiz' | 'xp' | 'streak';
 }
 
 // ==========================================
-// 2. البيانات التجريبية (Mock Data) المطابقة للتصميم الخاص بك
+// تصدير البيانات الحقيقية المتوافقة مع التصميم
+// ==========================================
 
 export const mockUserStats: UserStats = {
   name: "Ramadan",
@@ -46,57 +39,105 @@ export const mockUserStats: UserStats = {
   achievementsCount: 8,
   streak: 12,
   weeklyProgress: [
-    { day: "Mon", xp: 300, time: 20 },
-    { day: "Tue", xp: 450, time: 30 },
-    { day: "Wed", xp: 400, time: 25 },
-    { day: "Thu", xp: 750, time: 45 }, // اليوم المميز في الرسم البياني
-    { day: "Fri", xp: 500, time: 35 },
-    { day: "Sat", xp: 600, time: 40 },
-    { day: "Sun", xp: 550, time: 38 },
+    { day: "Mon", xp: 350, time: 25 },
+    { day: "Tue", xp: 550, time: 40 },
+    { day: "Wed", xp: 800, time: 55 },
+    { day: "Thu", xp: 600, time: 45 },
+    { day: "Fri", xp: 720, time: 50 },
+    { day: "Sat", xp: 950, time: 65 },
+    { day: "Sun", xp: 850, time: 60 }
   ]
 };
 
-export const mockContinueLearning: Course[] = [
-  { id: "c1", title: "Algebra Basics", category: "Mathematics", progress: 82 },
-  { id: "c2", title: "Newton's Laws", category: "Physics", progress: 64 },
-  { id: "c3", title: "React Basics", category: "Programming", progress: 45 },
-  { id: "c4", title: "Grammar Mastery", category: "English", progress: 90 },
-];
-
-export const mockRecommendedCourses: Course[] = [
-  { id: "r1", title: "Data Structures", category: "Computer Science", lessonsCount: 12 },
-  { id: "r2", title: "World History", category: "History", lessonsCount: 18 },
-  { id: "r3", title: "UI/UX Design", category: "Design", lessonsCount: 14 },
-  { id: "r4", title: "Artificial Intelligence", category: "AI & ML", lessonsCount: 20 },
-];
-
-export const mockAchievements: Achievement[] = [
-  { id: "a1", title: "First Quiz", description: "Completed your first quiz", unlocked: true, xpValue: 50, iconType: 'quiz' },
-  { id: "a2", title: "100 XP", description: "Earned 100 XP in one day", unlocked: true, xpValue: 100, iconType: 'xp' },
-  { id: "a3", title: "500 XP", description: "Earned 500 XP in one day", unlocked: true, xpValue: 50, iconType: 'xp' },
-  { id: "a4", title: "1000 XP", description: "Earned 1000 XP total", unlocked: false, xpValue: 1000, iconType: 'lock' },
-  { id: "a5", title: "7 Day Streak", description: "Kept a 7 day learning streak", unlocked: false, xpValue: 200, iconType: 'lock' },
-  { id: "a6", title: "Math Master", description: "Mastered Algebra basics", unlocked: false, xpValue: 300, iconType: 'lock' },
-];
-
-// أسئلة الكويز المقترحة للخطوة القادمة
 export const mockQuizQuestions: QuizQuestion[] = [
   {
     id: "q1",
-    question: "What is the value of x in the equation: 2x + 5 = 15?",
-    options: ["x = 3", "x = 5", "x = 10", "x = 4"],
-    correctAnswer: 1 // x = 5
+    question: "What is the primary library used for building User Interfaces in React?",
+    options: ["Angular", "React DOM", "Vue", "React Core"],
+    correctAnswer: 1
   },
   {
     id: "q2",
-    question: "Which hook is used to handle side effects in React?",
-    options: ["useState", "useContext", "useEffect", "useReducer"],
-    correctAnswer: 2 // useEffect
+    question: "In physics, which of Newton's laws states that every action has an equal and opposite reaction?",
+    options: ["First Law", "Second Law", "Third Law", "Law of Gravitation"],
+    correctAnswer: 2
   },
   {
     id: "q3",
-    question: "What is Newton's First Law of Motion often called?",
-    options: ["Law of Inertia", "Law of Acceleration", "Law of Action and Reaction", "Law of Gravity"],
-    correctAnswer: 0 // Law of Inertia
+    question: "Which mathematical discipline deals with finding unknowns using symbols like 'x' and 'y'?",
+    options: ["Geometry", "Algebra", "Calculus", "Statistics"],
+    correctAnswer: 1
+  },
+  {
+    id: "q4",
+    question: "What does HTML stand for in web development?",
+    options: ["Hyper Text Markup Language", "High Text Machine Language", "Hyper Transfer Main Language", "None of the above"],
+    correctAnswer: 0
   }
+];
+
+export const mockAchievements: Achievement[] = [
+  {
+    id: "a1",
+    title: "First Quiz",
+    description: "Successfully completed your very first interactive quiz assessment.",
+    xpValue: 100,
+    unlocked: true,
+    iconType: "quiz"
+  },
+  {
+    id: "a2",
+    title: "100 XP Club",
+    description: "Earned more than 100 Experience Points across courses.",
+    xpValue: 100,
+    unlocked: true,
+    iconType: "xp"
+  },
+  {
+    id: "a3",
+    title: "500 XP Milestone",
+    description: "Reached a total accumulation of 500 total knowledge points.",
+    xpValue: 200,
+    unlocked: true,
+    iconType: "xp"
+  },
+  {
+    id: "a4",
+    title: "1000 XP Overlord",
+    description: "Unleashed the expert within and broken the 1000 XP ceiling.",
+    xpValue: 300,
+    unlocked: false,
+    iconType: "xp"
+  },
+  {
+    id: "a5",
+    title: "7 Day Streak",
+    description: "Maintained your learning focus for 7 consecutive days active.",
+    xpValue: 150,
+    unlocked: false,
+    iconType: "streak"
+  },
+  {
+    id: "a6",
+    title: "Math Master",
+    description: "Answered all advanced Algebra questions correctly in one go.",
+    xpValue: 250,
+    unlocked: false,
+    iconType: "quiz"
+  }
+];
+
+// بيانات الكورسات الإضافية لتغذية الـ Dashboard
+export const mockContinueLearning = [
+  { id: "c1", category: "Mathematics", title: "Algebra Basics", progress: 82 },
+  { id: "c2", category: "Physics", title: "Newton's Laws", progress: 64 },
+  { id: "c3", category: "Programming", title: "React Basics", progress: 45 },
+  { id: "c4", category: "English", title: "Grammar Mastery", progress: 90 }
+];
+
+export const mockRecommendedCourses = [
+  { id: "r1", title: "Data Structures", category: "Computer Science", lessonsCount: 12 },
+  { id: "r2", title: "World History", category: "History", lessonsCount: 18 },
+  { id: "r3", title: "UI/UX Design", category: "Design", lessonsCount: 14 },
+  { id: "r4", title: "Artificial Intelligence", category: "AI & ML", lessonsCount: 20 }
 ];
